@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rs.ac.bg.fon.zajednicki.model;
 
 import java.sql.ResultSet;
@@ -11,58 +7,119 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- *
- * @author damja
+ * Predstavlja asocijativnu klasu koja povezuje klase Bibliotekar
+ * i Sertifikat. Sadrži podatak o datumu izdavanja konkretnog sertifikata određenom bibliotekaru.
+ * Implementira ApstraktniDomenskiObjekat interfejs.
+ * * @author Damjan
  */
-public class BibliotekarSertifikat implements ApstraktniDomenskiObjekat{
+public class BibliotekarSertifikat implements ApstraktniDomenskiObjekat {
+    
+    /**
+     * Bibliotekar na koga se sertifikat odnosi.
+     */
     private Bibliotekar bibliotekar;
+    
+    /**
+     * Sertifikat koji je dodeljen bibliotekaru.
+     */
     private Sertifikat sertifikat;
+    
+    /**
+     * Datum kada je sertifikat izdat bibliotekaru.
+     */
     private Date datumIzdavanja;
 
+    /**
+     * Podrazumevani konstruktor koji kreira prazan objekat klase BibliotekarSertifikat.
+     */
     public BibliotekarSertifikat() {
     }
 
+    /**
+     * Konstruktor koji inicijalizuje objekat asocijativne klase sa konkretnim vrednostima.
+     * @param bibliotekar Objekat bibliotekara kome se dodeljuje sertifikat.
+     * @param sertifikat Objekat sertifikata koji se dodeljuje.
+     * @param datumIzdavanja Datum izdavanja sertifikata.
+     */
     public BibliotekarSertifikat(Bibliotekar bibliotekar, Sertifikat sertifikat, Date datumIzdavanja) {
         this.bibliotekar = bibliotekar;
         this.sertifikat = sertifikat;
         this.datumIzdavanja = datumIzdavanja;
     }
 
+    /**
+     * Vraća objekat bibliotekara.
+     * @return Bibliotekar povezan sa ovim sertifikatom.
+     */
     public Bibliotekar getBibliotekar() {
         return bibliotekar;
     }
 
+    /**
+     * Postavlja objekat bibliotekara.
+     * @param bibliotekar Objekat bibliotekara.
+     */
     public void setBibliotekar(Bibliotekar bibliotekar) {
         this.bibliotekar = bibliotekar;
     }
 
+    /**
+     * Vraća objekat sertifikata.
+     * @return Sertifikat koji poseduje bibliotekar.
+     */
     public Sertifikat getSertifikat() {
         return sertifikat;
     }
 
+    /**
+     * Postavlja objekat sertifikata.
+     * @param sertifikat Objekat sertifikata.
+     */
     public void setSertifikat(Sertifikat sertifikat) {
         this.sertifikat = sertifikat;
     }
 
+    /**
+     * Vraća datum izdavanja sertifikata.
+     * @return Datum izdavanja kao Date.
+     */
     public Date getDatumIzdavanja() {
         return datumIzdavanja;
     }
 
+    /**
+     * Postavlja datum izdavanja sertifikata.
+     * @param datumIzdavanja Datum izdavanja.
+     */
     public void setDatumIzdavanja(Date datumIzdavanja) {
         this.datumIzdavanja = datumIzdavanja;
     }
 
+    /**
+     * Vraća tekstualni prikaz veze između bibliotekara i njegovog sertifikata.
+     * @return Podaci o vezi kao String.
+     */
     @Override
     public String toString() {
         return bibliotekar + ", sertifikat=" + sertifikat + ", datumIzdavanja=" + datumIzdavanja;
     }
 
+    /**
+     * Generiše hash code vrednost za objekat BibliotekarSertifikat.
+     * @return Hash code vrednost.
+     */
     @Override
     public int hashCode() {
         int hash = 3;
         return hash;
     }
 
+    /**
+     * Poredi dva objekta klase BibliotekarSertifikat na osnovu bibliotekara,
+     * sertifikata i datuma izdavanja.
+     * @param obj Objekat sa kojim se poredi.
+     * @return true ukoliko su svi pomenuti atributi identični, inače false.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -113,7 +170,6 @@ public class BibliotekarSertifikat implements ApstraktniDomenskiObjekat{
             
             lista.add(bs);
         }
-        
         return lista;
     }
 
@@ -132,17 +188,16 @@ public class BibliotekarSertifikat implements ApstraktniDomenskiObjekat{
         return "bibliotekarsertifikat.idBibliotekar=" + bibliotekar.getIdBibliotekar() + " AND bibliotekarsertifikat.idSertifikat=" + sertifikat.getIdSertifikat();
     }
 
+    /**
+     * @throws java.lang.UnsupportedOperationException Metoda još uvek nije implementirana u ovoj klasi.
+     */
     @Override
     public ApstraktniDomenskiObjekat vratiObjekatIzRS(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public String vratiVrednostiZaIzmenu() {
         return "idBibliotekar=" + bibliotekar.getIdBibliotekar() + ",idSertifikat=" + sertifikat.getIdSertifikat() + ",datumIzdavanja='" + datumIzdavanja + "'";
     }
-    
-    
-    
-    
 }

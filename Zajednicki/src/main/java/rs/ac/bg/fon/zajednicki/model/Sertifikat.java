@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rs.ac.bg.fon.zajednicki.model;
 
 import java.sql.ResultSet;
@@ -10,57 +6,117 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- *
- * @author damja
+ * Predstavlja domensku klasu Sertifikat koja mapira tabelu sertifikata u bazi podataka.
+ * Beleži informacije o zvaničnim stručnim sertifikatima koje bibliotekari mogu da poseduju,
+ * kao i o institucijama koje su ih izdale.
+ * Implementira ApstraktniDomenskiObjekat interfejs.
+ * * @author damja
  */
-public class Sertifikat implements ApstraktniDomenskiObjekat{
+public class Sertifikat implements ApstraktniDomenskiObjekat {
+    
+    /**
+     * Jedinstveni identifikator sertifikata.
+     */
     private int idSertifikat;
+    
+    /**
+     * Naziv stručnog sertifikata.
+     */
     private String naziv;
+    
+    /**
+     * Naziv izdavačke institucije ili organizacije koja je izdala sertifikat.
+     */
     private String institucija;
 
+    /**
+     * Podrazumevani konstruktor koji kreira prazan objekat klase Sertifikat.
+     */
     public Sertifikat() {
     }
 
+    /**
+     * Konstruktor koji kreira objekat sertifikata sa specifičnim nazivom i institucijom.
+     * @param naziv Naziv stručnog sertifikata.
+     * @param institucija Naziv obrazovne ustanove/organizacije.
+     */
     public Sertifikat(String naziv, String institucija) {
         this.naziv = naziv;
         this.institucija = institucija;
     }
 
+    /**
+     * Vraća jedinstveni identifikator sertifikata.
+     * @return ID sertifikata kao int.
+     */
     public int getIdSertifikat() {
         return idSertifikat;
     }
 
+    /**
+     * Postavlja jedinstveni identifikator sertifikata.
+     * @param idSertifikat ID sertifikata.
+     */
     public void setIdSertifikat(int idSertifikat) {
         this.idSertifikat = idSertifikat;
     }
 
+    /**
+     * Vraća naziv sertifikata.
+     * @return Naziv sertifikata kao String.
+     */
     public String getNaziv() {
         return naziv;
     }
 
+    /**
+     * Postavlja naziv sertifikata.
+     * @param naziv Naziv sertifikata.
+     */
     public void setNaziv(String naziv) {
         this.naziv = naziv;
     }
 
+    /**
+     * Vraća naziv institucije koja je izdala sertifikat.
+     * @return Naziv institucije kao String.
+     */
     public String getInstitucija() {
         return institucija;
     }
 
+    /**
+     * Postavlja naziv institucije koja izdaje sertifikat.
+     * @param institucija Naziv izdavaoca sertifikata.
+     */
     public void setInstitucija(String institucija) {
         this.institucija = institucija;
     }
 
+    /**
+     * Vraća tekstualni prikaz sertifikata (Naziv sertifikata).
+     * @return Naziv sertifikata kao String.
+     */
     @Override
     public String toString() {
         return naziv;
     }
 
+    /**
+     * Generiše hash code vrednost za objekat Sertifikat.
+     * @return Hash code vrednost.
+     */
     @Override
     public int hashCode() {
         int hash = 7;
         return hash;
     }
 
+    /**
+     * Poredi dva sertifikata na osnovu njihovog naziva.
+     * @param obj Objekat sa kojim se vrši poređenje.
+     * @return true ukoliko oba objekta dele isti naziv, inače false.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -92,7 +148,6 @@ public class Sertifikat implements ApstraktniDomenskiObjekat{
             
             lista.add(s);
         }
-        
         return lista;
     }
 
@@ -111,15 +166,16 @@ public class Sertifikat implements ApstraktniDomenskiObjekat{
         return "sertifikat.idSertifikat=" + idSertifikat;
     }
 
+    /**
+     * @throws java.lang.UnsupportedOperationException Metoda još uvek nije podržana/implementirana u ovoj klasi.
+     */
     @Override
     public ApstraktniDomenskiObjekat vratiObjekatIzRS(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public String vratiVrednostiZaIzmenu() {
         return "naziv='" + naziv + "',institucija='" + institucija + "'";
     }
-    
-    
 }
