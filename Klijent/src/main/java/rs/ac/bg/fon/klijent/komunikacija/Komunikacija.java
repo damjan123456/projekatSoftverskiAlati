@@ -4,6 +4,12 @@
  */
 package rs.ac.bg.fon.klijent.komunikacija;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import rs.ac.bg.fon.klijent.glavnikontroler.GlavniKontroler;
 import java.io.IOException;
 import java.net.Socket;
@@ -30,6 +36,7 @@ public class Komunikacija {
     private Posiljalac posiljalac;
     private Primalac primalac;
     private static Komunikacija instanca;
+    private final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
     public static Komunikacija getInstanca(){
         if (instanca == null)
             instanca = new Komunikacija();
@@ -45,161 +52,236 @@ public class Komunikacija {
             System.out.println("Server nije povezan");
         }
     }
-
-    public Bibliotekar login(String korisnickoIme, String sifra) {
-        Bibliotekar b = new Bibliotekar(korisnickoIme,sifra);
-        Zahtev zahtev = new Zahtev(Operacija.LOGIN,b);
-        posiljalac.posalji(zahtev);
+    
+    public Bibliotekar login(String korisnickoIme, String sifra) throws Exception {
+        Bibliotekar b = new Bibliotekar(korisnickoIme, sifra);
+        Zahtev zahtev = new Zahtev(Operacija.LOGIN, b);
+        posiljalac.posalji(gson.toJson(zahtev));
         
-        Odgovor odgovor = (Odgovor) primalac.primi();
-        b = (Bibliotekar) odgovor.getOdgovor();
-        return b;
+        String jsonOdgovor = (String) primalac.primi();
+        Odgovor odgovor = gson.fromJson(jsonOdgovor, Odgovor.class);
+        
+        if (odgovor.getGreska() != null) {
+            throw odgovor.getGreska();
+        }
+        if (odgovor.getOdgovor() == null) return null;
+        
+        String jsonObjekatText = gson.toJson(odgovor.getOdgovor());
+        JsonObject jsonObject = JsonParser.parseString(jsonObjekatText).getAsJsonObject();
+        return gson.fromJson(jsonObject, Bibliotekar.class);
     }
 
-    public List<Citalac> vratiCitaoce() {
-        List<Citalac> citaoci = new ArrayList<>();
-        Zahtev zahtev = new Zahtev(Operacija.VRATI_CITAOCE,null);
-        posiljalac.posalji(zahtev);
+    public List<Citalac> vratiCitaoce() throws Exception {
+        Zahtev zahtev = new Zahtev(Operacija.VRATI_CITAOCE, null);
+        posiljalac.posalji(gson.toJson(zahtev));
         
-        Odgovor odgovor = (Odgovor) primalac.primi();
-        citaoci = (List<Citalac>) odgovor.getOdgovor();
-        return citaoci;
+        String jsonOdgovor = (String) primalac.primi();
+        Odgovor odgovor = gson.fromJson(jsonOdgovor, Odgovor.class);
+        
+        if (odgovor.getGreska() != null) {
+            throw odgovor.getGreska();
+        }
+        
+        List<Citalac> lista = new ArrayList<>();
+        if (odgovor.getOdgovor() != null) {
+            String jsonListaText = gson.toJson(odgovor.getOdgovor());
+            JsonArray jsonArray = JsonParser.parseString(jsonListaText).getAsJsonArray();
+            for (JsonElement element : jsonArray) {
+                lista.add(gson.fromJson(element, Citalac.class));
+            }
+        }
+        return lista;
     }
 
     public void obrisiCitaoca(Citalac c) throws Exception {
         Zahtev zahtev = new Zahtev(Operacija.OBRISI_CITAOCA, c);
-        posiljalac.posalji(zahtev);
+        posiljalac.posalji(gson.toJson(zahtev));
         
-        Odgovor odgovor = (Odgovor) primalac.primi();
-        if (odgovor.getOdgovor() == null)
-            System.out.println("Citalac je obrisan");
-        else {
+        String jsonOdgovor = (String) primalac.primi();
+        Odgovor odgovor = gson.fromJson(jsonOdgovor, Odgovor.class);
+        
+        if (odgovor.getGreska() != null) {
             System.out.println("Citalac nije obrisan");
-            ((Exception)odgovor.getOdgovor()).printStackTrace();
-            throw new Exception("Greska");
+            throw odgovor.getGreska();
         }
+        System.out.println("Citalac je obrisan");
     }
 
     public void unesiSertifikat(Sertifikat sertifikat) throws Exception {
         Zahtev zahtev = new Zahtev(Operacija.UNESI_SERTIFIKAT, sertifikat);
-        posiljalac.posalji(zahtev);
+        posiljalac.posalji(gson.toJson(zahtev));
         
-        Odgovor odgovor = (Odgovor) primalac.primi();
-        if (odgovor.getOdgovor() == null)
-            System.out.println("Sertifikat je dodat");
-        else {
+        String jsonOdgovor = (String) primalac.primi();
+        Odgovor odgovor = gson.fromJson(jsonOdgovor, Odgovor.class);
+        
+        if (odgovor.getGreska() != null) {
             System.out.println("Sertifikat nije dodat");
-            ((Exception)odgovor.getOdgovor()).printStackTrace();
-            throw new Exception("Greska");
+            throw odgovor.getGreska();
         }
+        System.out.println("Sertifikat je dodat");
     }
 
-    public List<Mesto> vratiMesta() {
-        List<Mesto> mesta = new ArrayList<>();
-        Zahtev zahtev = new Zahtev(Operacija.VRATI_MESTA,null);
-        posiljalac.posalji(zahtev);
+    public List<Mesto> vratiMesta() throws Exception {
+        Zahtev zahtev = new Zahtev(Operacija.VRATI_MESTA, null);
+        posiljalac.posalji(gson.toJson(zahtev));
         
-        Odgovor odgovor = (Odgovor) primalac.primi();
-        mesta = (List<Mesto>) odgovor.getOdgovor();
-        return mesta;
+        String jsonOdgovor = (String) primalac.primi();
+        Odgovor odgovor = gson.fromJson(jsonOdgovor, Odgovor.class);
+        
+        if (odgovor.getGreska() != null) {
+            throw odgovor.getGreska();
+        }
+        
+        List<Mesto> lista = new ArrayList<>();
+        if (odgovor.getOdgovor() != null) {
+            String jsonListaText = gson.toJson(odgovor.getOdgovor());
+            JsonArray jsonArray = JsonParser.parseString(jsonListaText).getAsJsonArray();
+            for (JsonElement element : jsonArray) {
+                lista.add(gson.fromJson(element, Mesto.class));
+            }
+        }
+        return lista;
     }
 
     public void unesiCitaoca(Citalac citalac) throws Exception {
         Zahtev zahtev = new Zahtev(Operacija.UNESI_CITAOCA, citalac);
-        posiljalac.posalji(zahtev);
+        posiljalac.posalji(gson.toJson(zahtev));
         
-        Odgovor odgovor = (Odgovor) primalac.primi();
-        if (odgovor.getOdgovor() == null)
-            System.out.println("Citalac je dodat");
-        else {
+        String jsonOdgovor = (String) primalac.primi();
+        Odgovor odgovor = gson.fromJson(jsonOdgovor, Odgovor.class);
+        
+        if (odgovor.getGreska() != null) {
             System.out.println("Citalac nije dodat");
-            ((Exception)odgovor.getOdgovor()).printStackTrace();
-            throw new Exception("Greska");
+            throw odgovor.getGreska();
         }
+        System.out.println("Citalac je dodat");
     }
 
     public void izmeniCitaoca(Citalac citalac) throws Exception {
         Zahtev zahtev = new Zahtev(Operacija.IZMENI_CITAOCA, citalac);
-        posiljalac.posalji(zahtev);
+        posiljalac.posalji(gson.toJson(zahtev));
         
-        Odgovor odgovor = (Odgovor) primalac.primi();
-        if (odgovor.getOdgovor() == null){
-            System.out.println("Citalac je izmenjen");
-            GlavniKontroler.getInstanca().osveziFormu();
-        }
-        else {
+        String jsonOdgovor = (String) primalac.primi();
+        Odgovor odgovor = gson.fromJson(jsonOdgovor, Odgovor.class);
+        
+        if (odgovor.getGreska() != null) {
             System.out.println("Citalac nije izmenjen");
-            ((Exception)odgovor.getOdgovor()).printStackTrace();
-            throw new Exception("Greska");
+            throw odgovor.getGreska();
         }
+        System.out.println("Citalac je izmenjen");
+        GlavniKontroler.getInstanca().osveziFormu();
     }
 
-    public List<ZapisOIznajmljivanju> vratiZapise() {
-        List<ZapisOIznajmljivanju> zapisi = new ArrayList<>();
-        Zahtev zahtev = new Zahtev(Operacija.VRATI_ZAPISE,null);
-        posiljalac.posalji(zahtev);
+    public List<ZapisOIznajmljivanju> vratiZapise() throws Exception {
+        Zahtev zahtev = new Zahtev(Operacija.VRATI_ZAPISE, null);
+        posiljalac.posalji(gson.toJson(zahtev));
         
-        Odgovor odgovor = (Odgovor) primalac.primi();
-        zapisi = (List<ZapisOIznajmljivanju>) odgovor.getOdgovor();
-        return zapisi;   
+        String jsonOdgovor = (String) primalac.primi();
+        Odgovor odgovor = gson.fromJson(jsonOdgovor, Odgovor.class);
+        
+        if (odgovor.getGreska() != null) {
+            throw odgovor.getGreska();
+        }
+        
+        List<ZapisOIznajmljivanju> lista = new ArrayList<>();
+        if (odgovor.getOdgovor() != null) {
+            String jsonListaText = gson.toJson(odgovor.getOdgovor());
+            JsonArray jsonArray = JsonParser.parseString(jsonListaText).getAsJsonArray();
+            for (JsonElement element : jsonArray) {
+                lista.add(gson.fromJson(element, ZapisOIznajmljivanju.class));
+            }
+        }
+        return lista;
     }
 
-    public List<Knjiga> vratiKnjige() {
-        List<Knjiga> knjige = new ArrayList<>();
-        Zahtev zahtev = new Zahtev(Operacija.VRATI_KNJIGE,null);
-        posiljalac.posalji(zahtev);
+    public List<Knjiga> vratiKnjige() throws Exception {
+        Zahtev zahtev = new Zahtev(Operacija.VRATI_KNJIGE, null);
+        posiljalac.posalji(gson.toJson(zahtev));
         
-        Odgovor odgovor = (Odgovor) primalac.primi();
-        knjige = (List<Knjiga>) odgovor.getOdgovor();
-        return knjige;
+        String jsonOdgovor = (String) primalac.primi();
+        Odgovor odgovor = gson.fromJson(jsonOdgovor, Odgovor.class);
+        
+        if (odgovor.getGreska() != null) {
+            throw odgovor.getGreska();
+        }
+        
+        List<Knjiga> lista = new ArrayList<>();
+        if (odgovor.getOdgovor() != null) {
+            String jsonListaText = gson.toJson(odgovor.getOdgovor());
+            JsonArray jsonArray = JsonParser.parseString(jsonListaText).getAsJsonArray();
+            for (JsonElement element : jsonArray) {
+                lista.add(gson.fromJson(element, Knjiga.class));
+            }
+        }
+        return lista;
     }
 
     public void kreirajZapis(ZapisOIznajmljivanju zapis) throws Exception {
         Zahtev zahtev = new Zahtev(Operacija.KREIRAJ_ZAPIS, zapis);
-        posiljalac.posalji(zahtev);
+        posiljalac.posalji(gson.toJson(zahtev));
         
-        Odgovor odgovor = (Odgovor) primalac.primi();
-        if (odgovor.getOdgovor() == null)
-            System.out.println("Zapis o iznajmljivanju je dodat");
-        else {
+        String jsonOdgovor = (String) primalac.primi();
+        Odgovor odgovor = gson.fromJson(jsonOdgovor, Odgovor.class);
+        
+        if (odgovor.getGreska() != null) {
             System.out.println("Zapis o iznajmljivanju nije dodat");
-            ((Exception)odgovor.getOdgovor()).printStackTrace();
-            throw new Exception("Greska");
+            throw odgovor.getGreska();
         }
+        System.out.println("Zapis o iznajmljivanju je dodat");
     }
-
 
     public void izmeniZapis(ZapisOIznajmljivanju zapis) throws Exception {
         Zahtev zahtev = new Zahtev(Operacija.IZMENI_ZAPIS, zapis);
-        posiljalac.posalji(zahtev);
+        posiljalac.posalji(gson.toJson(zahtev));
         
-        Odgovor odgovor = (Odgovor) primalac.primi();
-        if (odgovor.getOdgovor() == null)
-            System.out.println("Zapis je promenjen");
-        else {
+        String jsonOdgovor = (String) primalac.primi();
+        Odgovor odgovor = gson.fromJson(jsonOdgovor, Odgovor.class);
+        
+        if (odgovor.getGreska() != null) {
             System.out.println("Zapis nije promenjen");
-            ((Exception)odgovor.getOdgovor()).printStackTrace();
-            throw new Exception("Greska");
+            throw odgovor.getGreska();
         }
+        System.out.println("Zapis je promenjen");
     }
 
-    public List<Bibliotekar> vratiBibliotekare() {
-        List<Bibliotekar> bibliotekari = new ArrayList<>();
-        Zahtev zahtev = new Zahtev(Operacija.VRATI_BIBLIOTEKARE,null);
-        posiljalac.posalji(zahtev);
+    public List<Bibliotekar> vratiBibliotekare() throws Exception {
+        Zahtev zahtev = new Zahtev(Operacija.VRATI_BIBLIOTEKARE, null);
+        posiljalac.posalji(gson.toJson(zahtev));
         
-        Odgovor odgovor = (Odgovor) primalac.primi();
-        bibliotekari = (List<Bibliotekar>) odgovor.getOdgovor();
-        return bibliotekari;
+        String jsonOdgovor = (String) primalac.primi();
+        Odgovor odgovor = gson.fromJson(jsonOdgovor, Odgovor.class);
+        
+        if (odgovor.getGreska() != null) {
+            throw odgovor.getGreska();
+        }
+        
+        List<Bibliotekar> lista = new ArrayList<>();
+        if (odgovor.getOdgovor() != null) {
+            String jsonListaText = gson.toJson(odgovor.getOdgovor());
+            JsonArray jsonArray = JsonParser.parseString(jsonListaText).getAsJsonArray();
+            for (JsonElement element : jsonArray) {
+                lista.add(gson.fromJson(element, Bibliotekar.class));
+            }
+        }
+        return lista;
     }
 
-    public ZapisOIznajmljivanju pretraziZapis(ZapisOIznajmljivanju z) {
-        ZapisOIznajmljivanju zapis = new ZapisOIznajmljivanju();
+    public ZapisOIznajmljivanju pretraziZapis(ZapisOIznajmljivanju z) throws Exception {
         Zahtev zahtev = new Zahtev(Operacija.VRATI_ZAPIS, z);
-        posiljalac.posalji(zahtev);
+        posiljalac.posalji(gson.toJson(zahtev));
         
-        Odgovor odgovor = (Odgovor) primalac.primi();
-        zapis = (ZapisOIznajmljivanju) odgovor.getOdgovor();
-        return zapis;
+        String jsonOdgovor = (String) primalac.primi();
+        Odgovor odgovor = gson.fromJson(jsonOdgovor, Odgovor.class);
+        
+        if (odgovor.getGreska() != null) {
+            throw odgovor.getGreska();
+        }
+        if (odgovor.getOdgovor() == null) return null;
+        
+        String jsonObjekatText = gson.toJson(odgovor.getOdgovor());
+        JsonObject jsonObject = JsonParser.parseString(jsonObjekatText).getAsJsonObject();
+        return gson.fromJson(jsonObject, ZapisOIznajmljivanju.class);
     }
+
+    
 }

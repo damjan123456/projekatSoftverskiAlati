@@ -9,7 +9,10 @@ import rs.ac.bg.fon.klijent.forme.model.ModelTabeleCitaoci;
 import rs.ac.bg.fon.klijent.glavnikontroler.GlavniKontroler;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import rs.ac.bg.fon.klijent.komunikacija.Komunikacija;
@@ -36,7 +39,12 @@ public class PrikazCitalacaController {
     }
 
     private void pripremiFormu() {
-        List<Citalac> citaoci = Komunikacija.getInstanca().vratiCitaoce();
+        List<Citalac> citaoci = new ArrayList<>();
+        try {
+            citaoci = Komunikacija.getInstanca().vratiCitaoce();
+        } catch (Exception ex) {
+            Logger.getLogger(PrikazCitalacaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         ModelTabeleCitaoci mtc = new ModelTabeleCitaoci(citaoci);
         pcf.getjTableCitaoci().setModel(mtc);
         napuniCombo();
@@ -133,7 +141,12 @@ public class PrikazCitalacaController {
     }
     
     private void napuniCombo(){
-        List<Mesto> mesta = Komunikacija.getInstanca().vratiMesta();
+        List<Mesto> mesta = new ArrayList<>();
+        try {
+            mesta = Komunikacija.getInstanca().vratiMesta();
+        } catch (Exception ex) {
+            Logger.getLogger(PrikazCitalacaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         pcf.getjComboBoxMesta().addItem(null);
         for (Mesto m : mesta) {
             pcf.getjComboBoxMesta().addItem(m);

@@ -13,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import rs.ac.bg.fon.klijent.komunikacija.Komunikacija;
@@ -42,7 +44,12 @@ public class PrikazZapisaController {
 
     private void pripremiFormu() {
         pzf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        List<ZapisOIznajmljivanju> zapisi = Komunikacija.getInstanca().vratiZapise();
+        List<ZapisOIznajmljivanju> zapisi = new ArrayList<>();
+        try {
+            zapisi = Komunikacija.getInstanca().vratiZapise();
+        } catch (Exception ex) {
+            Logger.getLogger(PrikazZapisaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         ModelTabeleZapisi mtz = new ModelTabeleZapisi(zapisi);
         pzf.getjTableZapisi().setModel(mtz);
         
@@ -113,7 +120,12 @@ public class PrikazZapisaController {
             }
 
             private void osvezi() {
-                List<ZapisOIznajmljivanju> zapisi = Komunikacija.getInstanca().vratiZapise();
+                List<ZapisOIznajmljivanju> zapisi = new ArrayList<>();
+                try {
+                    zapisi = Komunikacija.getInstanca().vratiZapise();
+                } catch (Exception ex) {
+                    Logger.getLogger(PrikazZapisaController.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 ModelTabeleZapisi mtz = new ModelTabeleZapisi(zapisi);
                 pzf.getjTableZapisi().setModel(mtz);
             }

@@ -15,6 +15,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import rs.ac.bg.fon.klijent.komunikacija.Komunikacija;
 import rs.ac.bg.fon.zajednicki.model.Bibliotekar;
@@ -171,7 +173,12 @@ public class GlavnaFormaController {
     }
 
     private void napuniComboKnjige() {
-        List<Knjiga> knjige = Komunikacija.getInstanca().vratiKnjige();
+        List<Knjiga> knjige = new ArrayList<>();
+        try {
+            knjige = Komunikacija.getInstanca().vratiKnjige();
+        } catch (Exception ex) {
+            Logger.getLogger(GlavnaFormaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         for (Knjiga k : knjige) {
             gf.getjComboBoxKnjiga().addItem(k);
         }
@@ -179,7 +186,12 @@ public class GlavnaFormaController {
     }
 
     private void napuniComboCitaoci() {
-        List<Citalac> citaoci = Komunikacija.getInstanca().vratiCitaoce();
+        List<Citalac> citaoci = new ArrayList<>();
+        try {
+            citaoci = Komunikacija.getInstanca().vratiCitaoce();
+        } catch (Exception ex) {
+            Logger.getLogger(GlavnaFormaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         for (Citalac c : citaoci) {
             gf.getjComboBoxCitalac().addItem(c);
         }
@@ -187,7 +199,12 @@ public class GlavnaFormaController {
     }
     
     private void napuniComboBibliotekari() {
-        List<Bibliotekar> bibliotekari = Komunikacija.getInstanca().vratiBibliotekare();
+        List<Bibliotekar> bibliotekari = new ArrayList<>();
+        try {
+            bibliotekari = Komunikacija.getInstanca().vratiBibliotekare();
+        } catch (Exception ex) {
+            Logger.getLogger(GlavnaFormaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         for (Bibliotekar b : bibliotekari) {
             gf.getjComboBoxBibliotekari().addItem(b);
         }

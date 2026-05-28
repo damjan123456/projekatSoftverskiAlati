@@ -12,6 +12,7 @@ import java.io.Serializable;
  */
 public class Odgovor implements Serializable {
     private Object odgovor;
+    private String greska;
 
     public Odgovor() {
     }
@@ -28,6 +29,14 @@ public class Odgovor implements Serializable {
         this.odgovor = odgovor;
     }
     
+    public void setGreska(Exception e){
+        if (e != null)
+            this.greska = e.getMessage();
+    }
     
-    
+    public Exception getGreska(){
+        if (greska != null)
+            return new Exception(greska);
+        return null;
+    }
 }

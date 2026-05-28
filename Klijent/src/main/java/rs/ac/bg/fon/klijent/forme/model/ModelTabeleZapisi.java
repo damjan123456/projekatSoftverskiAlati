@@ -41,7 +41,12 @@ public class ModelTabeleZapisi extends AbstractTableModel {
         ZapisOIznajmljivanju zapis = lista.get(rowIndex);
         return switch (columnIndex) {
             case 0 -> zapis.getIdZapis();
-            case 1 -> zapis.getDatumIznajmljivanja();
+            case 1 -> {
+                if (zapis.getDatumIznajmljivanja() != null) {
+                    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd.MM.yyyy.");
+                    yield sdf.format(zapis.getDatumIznajmljivanja());
+                }
+                yield "";}
             case 2 -> zapis.getUkupanIznos();
             case 3 -> zapis.getCitalac().getIme() + " " + zapis.getCitalac().getPrezime();
             case 4 -> zapis.getBibliotekar().getIme() + " " + zapis.getBibliotekar().getPrezime();
