@@ -5,13 +5,22 @@
 package rs.ac.bg.fon.klijent.forme;
 
 /**
+ * Predstavlja grafički korisnički interfejs (JFrame) za kreiranje i unos novog 
+ * zapisa o iznajmljivanju u sistemu.
+ * <p>
+ * Forma služi kao pogled (View) unutar klijentskog dela aplikacije i dizajnirana je tako da 
+ * kroz javne metode i getter-e izlaže svoje vizuelne komponente (tabelu stavki, tekstualna polja, 
+ * padajuće menije) kontroleru koji upravlja njenom poslovnom logikom i mrežnim zahtevima.
+ * </p>
  *
- * @author damja
+ * @author Damjan
  */
 public class DodajZapisForma extends javax.swing.JFrame {
 
     /**
-     * Creates new form DodajZapisForma
+     * Kreira novu instancu forme DodajZapisForma.
+     * Unutar konstruktora se poziva automatski generisana metoda initComponents()
+     * koja inicijalizuje, raspoređuje i pozicionira sve komponente korisničkog interfejsa.
      */
     public DodajZapisForma() {
         initComponents();

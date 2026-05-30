@@ -10,13 +10,22 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
+ * Predstavlja grafički korisnički interfejs (JFrame) za autentifikaciju korisnika na sistem.
+ * <p>
+ * Forma obezbeđuje unos korisničkog imena kroz tekstualno polje i lozinke kroz zaštićeno polje,
+ * kao i dugme za pokretanje procesa prijave. Dizajnirana je po MVP/MVC šablonu tako da kroz 
+ * javne getter i setter metode omogućava kontroleru pristup unetim podacima i upravljanje stanjem 
+ * njenih vizuelnih komponenti.
+ * </p>
  *
- * @author damja
+ * @author Damjan
  */
 public class LoginForma extends javax.swing.JFrame {
 
     /**
-     * Creates new form LoginForma
+     * Kreira novu instancu forme LoginForma.
+     * Unutar konstruktora se poziva automatski generisana metoda initComponents()
+     * koja inicijalizuje elemente korisničkog interfejsa i postavlja podrazumevane test vrednosti.
      */
     public LoginForma() {
         initComponents();
@@ -95,35 +104,69 @@ public class LoginForma extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldKorisnickoIme;
     // End of variables declaration//GEN-END:variables
 
+   /**
+     * Vraća instancu dugmeta zaduženog za slanje zahteva za prijavu na sistem.
+     *
+     * @return JButton Komponenta dugmeta "Prijavi se".
+     */
     public JButton getjButton1() {
         return jButton1;
     }
 
+    /**
+     * Postavlja novu instancu dugmeta za prijavu.
+     *
+     * @param jButton1 Nova instancu dugmeta tipa JButton.
+     */
     public void setjButton1(JButton jButton1) {
         this.jButton1 = jButton1;
     }
 
+    /**
+     * Vraća komponentu polja za unos lozinke koja sakriva uneti tekst.
+     *
+     * @return JPasswordField Komponenta za bezbedan unos šifre.
+     */
     public JPasswordField getjPasswordFieldSifra() {
         return jPasswordFieldSifra;
     }
 
+    /**
+     * Postavlja komponentu polja za lozinku.
+     *
+     * @param jPasswordFieldSifra Nova instanca komponente JPasswordField.
+     */
     public void setjPasswordFieldSifra(JPasswordField jPasswordFieldSifra) {
         this.jPasswordFieldSifra = jPasswordFieldSifra;
     }
 
+    /**
+     * Vraća tekstualno polje namenjeno za unos korisničkog imena.
+     *
+     * @return JTextField Komponenta tekstualnog polja za korisničko ime.
+     */
     public JTextField getjTextFieldKorisnickoIme() {
         return jTextFieldKorisnickoIme;
     }
 
+    /**
+     * Postavlja tekstualno polje za korisničko ime.
+     *
+     * @param jTextFieldKorisnickoIme Nova instanca komponente JTextField.
+     */
     public void setjTextFieldKorisnickoIme(JTextField jTextFieldKorisnickoIme) {
         this.jTextFieldKorisnickoIme = jTextFieldKorisnickoIme;
     }
 
+    /**
+     * Registruje prosleđeni ActionListener na dugme za prijavu.
+     * Povezuje se sa kontrolerom zaduženim za logovanje kako bi presreo klik korisnika, 
+     * pokrenuo validaciju polja i prosledio kredencijale serveru na proveru.
+     *
+     * @param actionListener Osluškivač događaja koji implementira logiku prijave.
+     */
     public void loginAddActionListener(ActionListener actionListener) {
         jButton1.addActionListener(actionListener);
     }
-
-
-
 }
 

@@ -10,13 +10,23 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import rs.ac.bg.fon.zajednicki.model.Mesto;
 /**
+ * Predstavlja grafički korisnički interfejs (JFrame) za unos novog čitaoca 
+ * ili izmenu podataka postojećeg čitaoca u sistemu.
+ * <p>
+ * Forma obezbeđuje tekstualna polja za unos ličnih podataka, padajući meni za odabir 
+ * mesta prebivališta, kao i akcione dugmiće za potvrdu operacija. Dizajnirana je tako da 
+ * kroz javne metode izlaže komponente i omogućava kontroleru registraciju 
+ * logike za obradu događaja.
+ * </p>
  *
- * @author damja
+ * @author Damjan
  */
 public class DodajCitaocaForma extends javax.swing.JFrame {
 
     /**
-     * Creates new form DodajCitaocaForma
+     * Kreira novu instancu forme DodajCitaocaForma.
+     * Unutar konstruktora se poziva automatski generisana metoda initComponents()
+     * koja pozicionira i inicijalizuje sve vizuelne komponente na formi.
      */
     public DodajCitaocaForma() {
         initComponents();
@@ -139,38 +149,78 @@ public class DodajCitaocaForma extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     
-
+/**
+     * Vraća komponentu padajućeg menija koja sadrži listu dostupnih mesta.
+     *
+     * @return JComboBox Komponenta sa objektima tipa Mesto.
+     */
     public JComboBox<Mesto> getjComboBoxMesta() {
         return jComboBoxMesta;
     }
 
+    /**
+     * Vraća tekstualno polje namenjeno za unos ili prikaz broja telefona čitaoca.
+     *
+     * @return JTextField Komponenta za unos broja telefona.
+     */
     public JTextField getjTextFieldBrojTel() {
         return jTextFieldBrojTel;
     }
 
+    /**
+     * Vraća tekstualno polje namenjeno za unos ili prikaz imena čitaoca.
+     *
+     * @return JTextField Komponenta za unos imena.
+     */
     public JTextField getjTextFieldIme() {
         return jTextFieldIme;
     }
 
+    /**
+     * Vraća tekstualno polje namenjeno za unos ili prikaz prezimena čitaoca.
+     *
+     * @return JTextField Komponenta za unos prezimena.
+     */
     public JTextField getjTextFieldPrezime() {
         return jTextFieldPrezime;
     }
-    
+
+    /**
+     * Registruje prosleđeni ActionListener na dugme "Dodaj".
+     * Koristi se od strane kontrolera kako bi se mapirala logika kreiranja novog čitaoca.
+     *
+     * @param actionListener Osluškivač događaja koji će se aktivirati klikom na dugme.
+     */
     public void dodajActionListener(ActionListener actionListener){
         jButtonDodaj.addActionListener(actionListener);
     }
 
+    /**
+     * Vraća komponentu dugmeta namenjenu za pokretanje izmene podataka o čitaocu.
+     *
+     * @return JButton Komponenta dugmeta "Izmeni".
+     */
     public JButton getjButtonIzmeni() {
         return jButtonIzmeni;
     }
 
+    /**
+     * Vraća komponentu dugmeta namenjenu za pokretanje unosa novog čitaoca.
+     *
+     * @return JButton Komponenta dugmeta "Dodaj".
+     */
     public JButton getjButtonDodaj() {
         return jButtonDodaj;
     }
     
+    /**
+     * Registruje prosleđeni ActionListener na dugme "Izmeni".
+     * Koristi se od strane kontrolera kako bi se mapirala logika ažuriranja podataka o čitaocu.
+     *
+     * @param actionListener Osluškivač događaja koji će se aktivirati klikom na dugme.
+     */
     public void izmeniActionListener(ActionListener actionListener){
         jButtonIzmeni.addActionListener(actionListener);
     }
- 
 
 }

@@ -9,13 +9,21 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 
 /**
+ * Predstavlja grafički korisnički interfejs za unos novog sertifikata u sistem.
+ * <p>
+ * Forma obezbeđuje tekstualna polja za unos naziva sertifikata i institucije koja ga izdaje,
+ * kao i dugme za potvrdu unosa. Dizajnirana je tako da kroz javne getter metode izlaže 
+ * svoje komponente i omogućava kontroleru registraciju logike za obradu događaja.
+ * </p>
  *
- * @author damja
+ * @author Damjan
  */
 public class DodajSertifikatForma extends javax.swing.JFrame {
 
     /**
-     * Creates new form DodajSertifikatForma
+     * Kreira novu instancu forme DodajSertifikatForma.
+     * Unutar konstruktora se poziva automatski generisana metoda initComponents()
+     * koja pozicionira i inicijalizuje sve vizuelne komponente na formi.
      */
     public DodajSertifikatForma() {
         initComponents();
@@ -102,18 +110,40 @@ public class DodajSertifikatForma extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldNaziv;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Vraća komponentu dugmeta namenjenu za pokretanje akcije dodavanja sertifikata.
+     *
+     * @return JButton Komponenta dugmeta "Dodaj".
+     */
     public JButton getjButtonDodaj() {
         return jButtonDodaj;
     }
 
+    /**
+     * Vraća tekstualno polje namenjeno za unos ili prikaz institucije koja izdaje sertifikat.
+     *
+     * @return JTextField Komponenta za unos institucije.
+     */
     public JTextField getjTextFieldInstitucija() {
         return jTextFieldInstitucija;
     }
 
+    /**
+     * Vraća tekstualno polje namenjeno za unos ili prikaz zvaničnog naziva sertifikata.
+     *
+     * @return JTextField Komponenta za unos naziva.
+     */
     public JTextField getjTextFieldNaziv() {
         return jTextFieldNaziv;
     }
 
+    /**
+     * Registruje prosleđeni ActionListener na dugme "Dodaj".
+     * Koristi se od strane odgovarajućeg kontrolera kako bi se mapirala i izvršila logika 
+     * validacije i slanja podataka o sertifikatu ka serveru.
+     *
+     * @param actionListener Osluškivač događaja koji će se aktivirati klikom na dugme.
+     */
     public void dodajActionListener(ActionListener actionListener) {
         jButtonDodaj.addActionListener(actionListener);
     }

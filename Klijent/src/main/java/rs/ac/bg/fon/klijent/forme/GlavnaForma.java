@@ -17,13 +17,25 @@ import rs.ac.bg.fon.zajednicki.model.Knjiga;
 
 
 /**
+ * Predstavlja glavnu grafičku formu klijentske aplikacije.
+ * <p>
+ * Ova forma omogućava upravljanje i evidenciju zapisa o iznajmljivanju knjiga (unos, izmena, 
+ * dodavanje i brisanje stavki unutar tabele), kao i navigaciju kroz aplikaciju putem 
+ * glavnog menija (JMenuBar) koji komunicira direktno sa GlavniKontroler-om.
+ * </p>
+ * <p>
+ * Dizajnirana je bez direktne biznis logike i kroz javne metode izlaže komponente 
+ * kontroleru za potrebe manipulacije podacima i registracije osluškivača.
+ * </p>
  *
- * @author damja
+ * @author Damjan
  */
 public class GlavnaForma extends javax.swing.JFrame {
 
     /**
-     * Creates new form GlavnaForma
+     * Kreira novu instancu klase GlavnaForma.
+     * Poziva automatski generisanu metodu initComponents() za inicijalizaciju 
+     * rasporeda i svih vizuelnih komponenti na prozoru.
      */
     public GlavnaForma() {
         initComponents();
@@ -371,68 +383,156 @@ public class GlavnaForma extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldUkupanIznos;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Vraća komponentu natpisa (JLabel) zaduženu za prikaz korisničkog imena 
+     * trenutno ulogovanog bibliotekara.
+     *
+     * @return JLabel Komponenta za prikaz imena korisnika.
+     */
     public JLabel getjLabelKorisnicko() {
         return jLabelKorisnicko;
     }
 
+    /**
+     * Vraća padajući meni koji sadrži listu svih čitalaca registrovanih u sistemu.
+     *
+     * @return JComboBox Komponenta sa objektima tipa Citalac.
+     */
     public JComboBox<Citalac> getjComboBoxCitalac() {
         return jComboBoxCitalac;
     }
 
+    /**
+     * Vraća padajući meni koji sadrži listu svih dostupnih knjiga za iznajmljivanje.
+     *
+     * @return JComboBox Komponenta sa objektima tipa Knjiga.
+     */
     public JComboBox<Knjiga> getjComboBoxKnjiga() {
         return jComboBoxKnjiga;
     }
 
+    /**
+     * Vraća komponentu tabele u kojoj su tabelarno prikazane dodate stavke 
+     * trenutnog zapisa o iznajmljivanju.
+     *
+     * @return JTable Komponenta za prikaz stavki zapisa.
+     */
     public JTable getjTableStavke() {
         return jTableStavke;
     }
 
+    /**
+     * Vraća padajući meni sa listom bibliotekara u sistemu.
+     *
+     * @return JComboBox Komponenta sa objektima tipa Bibliotekar.
+     */
     public JComboBox<Bibliotekar> getjComboBoxBibliotekari() {
         return jComboBoxBibliotekari;
     }
 
+    /**
+     * Vraća tekstualno polje namenjeno za unos ili prikaz datuma kreiranja zapisa.
+     *
+     * @return JTextField Komponenta za unos datuma zapisa.
+     */
     public JTextField getjTextFieldDatum() {
         return jTextFieldDatum;
     }
 
+    /**
+     * Vraća padajući meni namenjen za odabir količine primeraka izabrane knjige.
+     *
+     * @return JComboBox Komponenta sa tekstualnim vrednostima količine.
+     */
     public JComboBox<String> getjComboBoxKolicina() {
         return jComboBoxKolicina;
     }
 
+    /**
+     * Vraća tekstualno polje namenjeno za unos datuma kada čitalac vraća knjigu.
+     *
+     * @return JTextField Komponenta za unos datuma vraćanja.
+     */
     public JTextField getjTextFieldDatumVracanja() {
         return jTextFieldDatumVracanja;
     }
 
+    /**
+     * Vraća tekstualno polje koje prikazuje maksimalno dozvoljeni rok/datum za vraćanje knjige.
+     *
+     * @return JTextField Komponenta za prikaz maksimalnog roka.
+     */
     public JTextField getjTextFieldMaksDatumVracanja() {
         return jTextFieldMaksDatumVracanja;
     }
 
+    /**
+     * Vraća tekstualno polje koje prikazuje ukupnu kalkulisanu cenu/iznos za sve unete stavke.
+     * Polje je podrazumevano zaključano za ručne izmene.
+     *
+     * @return JTextField Komponenta za prikaz ukupnog iznosa.
+     */
     public JTextField getjTextFieldUkupanIznos() {
         return jTextFieldUkupanIznos;
     }
 
+    /**
+     * Registruje prosleđeni ActionListener na dugme "Dodaj" unutar panela za stavke.
+     * Koristi se za dodavanje nove pojedinačne stavke u tabelu tekućeg zapisa.
+     *
+     * @param actionListener Osluškivač događaja koji će se aktivirati klikom na dugme.
+     */
     public void addDodajActionListener(ActionListener actionListener){
         jButtonDodaj.addActionListener(actionListener);
     }
     
+    /**
+     * Registruje prosleđeni ActionListener na dugme "Obrisi" unutar panela za stavke.
+     * Koristi se za uklanjanje selektovane stavke iz tabele.
+     *
+     * @param actionListener Osluškivač događaja koji će se aktivirati klikom na dugme.
+     */
     public void addObrisiActionListener(ActionListener actionListener){
         jButtonObrisi.addActionListener(actionListener);
     }
+
+    /**
+     * Registruje prosleđeni ActionListener na dugme "Kreiraj Zapis".
+     * Koristi se od strane kontrolera kako bi se pokrenula procedura perzistencije celokupnog 
+     * zapisa sa svim stavkama na serveru.
+     *
+     * @param actionListener Osluškivač događaja koji će se aktivirati klikom na dugme.
+     */
     public void addKreirajActionListener(ActionListener actionListener){
         jButtonKreiraj.addActionListener(actionListener);
     }
 
+    /**
+     * Registruje prosleđeni ActionListener na dugme "Izmeni Zapis".
+     * Koristi se za pokretanje procedure ažuriranja postojećeg zapisa o iznajmljivanju u bazi podataka.
+     *
+     * @param actionListener Osluškivač događaja koji će se aktivirati klikom na dugme.
+     */
     public void addIzmeniActionListener(ActionListener actionListener) {
         jButtonIzmeniZapis.addActionListener(actionListener);
     }
 
+    /**
+     * Vraća komponentu dugmeta namenjenu za izvršavanje i potvrdu izmene zapisa.
+     *
+     * @return JButton Komponenta dugmeta "Izmeni Zapis".
+     */
     public JButton getjButtonIzmeniZapis() {
         return jButtonIzmeniZapis;
     }
 
+    /**
+     * Vraća komponentu dugmeta namenjenu za izvršavanje i potvrdu kreiranja novog zapisa.
+     *
+     * @return JButton Komponenta dugmeta "Kreiraj Zapis".
+     */
     public JButton getjButtonKreiraj() {
         return jButtonKreiraj;
     }
     
-
 }

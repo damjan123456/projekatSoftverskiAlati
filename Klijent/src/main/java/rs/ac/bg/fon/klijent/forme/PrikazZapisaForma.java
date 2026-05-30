@@ -10,13 +10,28 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
+ * Predstavlja grafički korisnički interfejs (JFrame) za prikaz, pretragu i detaljan pregled 
+ * zapisa o iznajmljivanju knjiga i njihovih stavki.
+ * <p>
+ * Forma implementira dve tabele:
+ * <ul>
+ * <li><b>Glavna tabela (Zapisi):</b> Prikazuje opšte informacije o iznajmljivanjima.</li>
+ * <li><b>Pomoćna tabela (Stavke):</b> Prikazuje konkretne stavke za selektovani zapis iz glavne tabele.</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Korisnik može filtrirati zapise unošenjem imena/prezimena čitaoca ili bibliotekara. 
+ * Kontroler upravlja akcijama pretrage, izmene zapisa, kao i prikazivanja detalja.
+ * </p>
  *
- * @author damja
+ * @author Damjan
  */
 public class PrikazZapisaForma extends javax.swing.JFrame {
 
     /**
-     * Creates new form PrikazZapisaOIznajmljivanju
+     * Kreira novu instancu forme PrikazZapisaForma.
+     * Poziva metodu initComponents() koja je generisana od strane NetBeans GUI Builder-a
+     * kako bi se inicijalizovale komponente i postavio raspored elemenata.
      */
     public PrikazZapisaForma() {
         initComponents();
@@ -153,30 +168,75 @@ public class PrikazZapisaForma extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldCitalac;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Vraća glavnu tabelu koja sadrži listu svih krovnih zapisa o iznajmljivanju.
+     * Kontroler osluškuje selekciju redova u ovoj tabeli kako bi ažurirao tabelu stavki.
+     *
+     * @return JTable Komponenta tabele sa zapisima o iznajmljivanju.
+     */
     public JTable getjTableZapisi() {
         return jTableZapisi;
     }
 
+    /**
+     * Vraća pomoćnu tabelu namenjenu prijasu pojedinačnih stavki 
+     * koje pripadaju trenutno selektovanom zapisu o iznajmljivanju.
+     *
+     * @return JTable Komponenta tabele sa stavkama selektovanog iznajmljivanja.
+     */
     public JTable getjTableStavke() {
         return jTableStavke;
     }
 
+    /**
+     * Vraća tekstualno polje koje služi za unos kriterijuma pretrage po bibliotekaru 
+     * koji je obradio iznajmljivanje.
+     *
+     * @return JTextField Komponenta tekstualnog polja za ime/prezime bibliotekara.
+     */
     public JTextField getjTextFieldBibliotekar() {
         return jTextFieldBibliotekar;
     }
 
+    /**
+     * Vraća tekstualno polje koje služi za unos kriterijuma pretrage po čitaocu 
+     * koji je iznajmio knjige.
+     *
+     * @return JTextField Komponenta tekstualnog polja za ime/prezime čitaoca.
+     */
     public JTextField getjTextFieldCitalac() {
         return jTextFieldCitalac;
     }
 
+    /**
+     * Registruje prosleđeni ActionListener na dugme "Izmeni".
+     * Aktivira se kada koordinator/kontroler treba da otvori prozor za modifikaciju 
+     * odabranog zapisa o iznajmljivanju (ili računa).
+     *
+     * @param actionListener Osluškivač događaja za pokretanje izmene zapisa.
+     */
     public void addIzmeniActionListener(ActionListener actionListener){
         jButtonIzmeniRacun.addActionListener(actionListener);
     }
 
+    /**
+     * Registruje prosleđeni ActionListener na dugme "Pretrazi".
+     * Ovdje se pokreće proces filtriranja krovnih zapisa na osnovu vrednosti unetih u polja 
+     * za čitaoca i bibliotekara.
+     *
+     * @param actionListener Osluškivač događaja za aktivaciju pretrage baze.
+     */
     public void addDugmePretraziActionListener(ActionListener actionListener) {
         jButtonPretrazi.addActionListener(actionListener);
     }
     
+    /**
+     * Registruje prosleđeni ActionListener na dugme "Detalji".
+     * Služi da se odabrani zapis otvori u zasebnom detaljnom prozoru, najčešće u režimu 
+     * gde su polja onemogućena za direktnu izmenu.
+     *
+     * @param actionListener Osluškivač događaja za prikazivanje detaljnih informacija.
+     */
     public void addDetaljiActionListener(ActionListener actionListener){
         jButtonDetalji.addActionListener(actionListener);
     }

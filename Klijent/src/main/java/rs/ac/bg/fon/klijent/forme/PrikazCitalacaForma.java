@@ -12,13 +12,25 @@ import javax.swing.JTextField;
 import rs.ac.bg.fon.zajednicki.model.Mesto;
 
 /**
+ * Predstavlja grafički korisnički interfejs (JFrame) za prikaz, pretragu i administraciju čitalaca.
+ * <p>
+ * Ova forma omogućava pretraživanje baze podataka čitalaca kombinovanjem filtera za ime, 
+ * prezime i mesto. Rezultati se prikazuju unutar tabele, a forma pruža opcije za brisanje 
+ * selektovanog čitaoca, izmenu njegovih podataka ili prikaz detaljnih informacija.
+ * </p>
+ * <p>
+ * Prati MVP/MVC arhitekturni šablon, gde su sve komponente izložene putem javnih getter metoda, 
+ * a registracija događaja se delegira odgovarajućem kontroleru.
+ * </p>
  *
- * @author damja
+ * @author Damjan
  */
 public class PrikazCitalacaForma extends javax.swing.JFrame {
 
     /**
-     * Creates new form PrikazCitalacaForma
+     * Kreira novu instancu forme PrikazCitalacaForma.
+     * Poziva automatski generisanu metodu initComponents() za inicijalizaciju 
+     * rasporeda prozora i svih vizuelnih komponenti.
      */
     public PrikazCitalacaForma() {
         initComponents();
@@ -150,38 +162,88 @@ public class PrikazCitalacaForma extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldPrezime;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Vraća komponentu tabele (JTable) u kojoj su prikazani učitani i filtrirani čitaoci.
+     *
+     * @return JTable Komponenta za tabelarni prikaz čitalaca.
+     */
     public JTable getjTableCitaoci() {
         return jTableCitaoci;
     }
 
+    /**
+     * Vraća komponentu dugmeta za brisanje selektovanog čitaoca.
+     *
+     * @return JButton Komponenta dugmeta "Obrisi".
+     */
     public JButton getjButtonObrisi() {
         return jButtonObrisi;
     }
 
+    /**
+     * Registruje prosleđeni ActionListener na dugme "Obrisi".
+     * Koristi se za pokretanje sistemske operacije uklanjanja selektovanog čitaoca iz baze.
+     *
+     * @param actionListener Osluškivač događaja za brisanje čitaoca.
+     */
     public void addDugmeObrisiActionListener(ActionListener actionListener) {
         jButtonObrisi.addActionListener(actionListener);
     }
     
+    /**
+     * Registruje prosleđeni ActionListener na dugme "Izmeni".
+     * Aktivira se kada kontroler treba da otvori formu za izmenu nad odabranim čitaocem.
+     *
+     * @param actionListener Osluškivač događaja za izmenu čitaoca.
+     */
     public void addDugmeIzmeniActionListener(ActionListener actionListener) {
         jButtonIzmeni.addActionListener(actionListener);
     }
     
+    /**
+     * Registruje prosleđeni ActionListener na dugme "Pretrazi".
+     * Koristi se za čitanje unetih parametara u tekstualnim poljima i ponovno filtriranje tabele.
+     *
+     * @param actionListener Osluškivač događaja za pokretanje pretrage.
+     */
     public void addDugmePretraziActionListener(ActionListener actionListener) {
         jButtonPretrazi.addActionListener(actionListener);
     }
     
+    /**
+     * Registruje prosleđeni ActionListener na dugme "Detalji".
+     * Služi za otvaranje detaljnog pregleda podataka o selektovanom čitaocu u read-only modifikaciji.
+     *
+     * @param actionListener Osluškivač događaja za prikaz detalja čitaoca.
+     */
     public void addDugmeDetaljiActionListener(ActionListener actionListener){
         jButtonDetalji.addActionListener(actionListener);
     }
     
+    /**
+     * Vraća padajući meni (JComboBox) koji sadrži listu objekata tipa Mesto
+     * iskorišćenih kao parametar pretrage.
+     *
+     * @return JComboBox Padajući meni sa geografskim mestima.
+     */
     public JComboBox<Mesto> getjComboBoxMesta() {
         return jComboBoxMesta;
     }
 
+    /**
+     * Vraća tekstualno polje namenjeno za unos imena čitaoca (ili dela imena) radi filtriranja.
+     *
+     * @return JTextField Komponenta za unos kriterijuma imena.
+     */
     public JTextField getjTextFieldIme() {
         return jTextFieldIme;
     }
 
+    /**
+     * Vraća tekstualno polje namenjeno za unos prezimena čitaoca radi filtriranja.
+     *
+     * @return JTextField Komponenta za unos kriterijuma prezimena.
+     */
     public JTextField getjTextFieldPrezime() {
         return jTextFieldPrezime;
     }
