@@ -1,18 +1,29 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rs.ac.bg.fon.server.operacija.citalac;
 
 import rs.ac.bg.fon.zajednicki.model.Citalac;
 import rs.ac.bg.fon.server.operacija.ApstraktnaGenerickaOperacija;
 
 /**
+ * Konkretna sistemska operacija zadužena za izmenu i ažuriranje podataka o postojećem čitaocu.
+ * Vrši rigoroznu validaciju svih tekstualnih i strukturnih atributa objekta pre perzistencije u bazu.
  *
- * @author damja
+ * @author Damjan
  */
 public class PromeniCitalac extends ApstraktnaGenerickaOperacija {
 
+    /**
+     * Podrazumevani konstruktor klase PromeniCitalac.
+     */
+    public PromeniCitalac() {
+    }
+
+    /**
+     * Validira podatke o čitaocu pre nego što se proslede bazi na ažuriranje.
+     * Proverava postojanje objekta, kao i ispravnost imena, prezimena, broja telefona i pripadajućeg mesta.
+     *
+     * @param objekat Objekat čitaoca čiji se podaci proveravaju.
+     * @throws java.lang.Exception Ako objekat nije validan ili ako neki od obaveznih atributa ne ispunjava validacione kriterijume.
+     */
     @Override
     protected void preduslovi(Object objekat) throws Exception {
         if (objekat == null || !(objekat instanceof Citalac)){
@@ -29,9 +40,14 @@ public class PromeniCitalac extends ApstraktnaGenerickaOperacija {
             throw new Exception("GRESKA MESTO");
     }
 
+    /**
+     * Poziva brokera baze podataka da izvrši izmenu nad prosleđenim entitetom čitaoca.
+     *
+     * @param objekat Objekat klase Citalac sa ažuriranim vrednostima.
+     * @throws java.lang.Exception Ako ažuriranje u bazi podataka ne uspe.
+     */
     @Override
     protected void izvrsiOperaciju(Object objekat) throws Exception {
         broker.edit((Citalac)objekat);
     }
-    
 }

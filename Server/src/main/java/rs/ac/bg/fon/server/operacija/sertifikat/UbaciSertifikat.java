@@ -1,18 +1,26 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rs.ac.bg.fon.server.operacija.sertifikat;
 
 import rs.ac.bg.fon.zajednicki.model.Sertifikat;
 import rs.ac.bg.fon.server.operacija.ApstraktnaGenerickaOperacija;
 
 /**
+ * Konkretna sistemska operacija koja omogućava trajno skladištenje i unos novog 
+ * sertifikata u bazu podataka.
  *
- * @author damja
+ * @author Damjan
  */
 public class UbaciSertifikat extends ApstraktnaGenerickaOperacija {
 
+    /**
+     * Podrazumevani konstruktor klase UbaciSertifikat.
+     */
+    public UbaciSertifikat() {
+    }
+
+    /**
+     * Validira strukturu i tekstualne atribute objekta sertifikata.
+     * Zahteva prisustvo institucije izdavaoca i naziva samog sertifikata.
+     */
     @Override
     protected void preduslovi(Object objekat) throws Exception {
         if (objekat == null || !(objekat instanceof Sertifikat)){
@@ -25,9 +33,11 @@ public class UbaciSertifikat extends ApstraktnaGenerickaOperacija {
             throw new Exception("GRESKA NAZIV");
     }
 
+    /**
+     * Poziva db brokera radi umetanja validiranog objekta sertifikata u bazu podataka.
+     */
     @Override
     protected void izvrsiOperaciju(Object objekat) throws Exception {
         broker.add((Sertifikat)objekat);
     }
-    
 }

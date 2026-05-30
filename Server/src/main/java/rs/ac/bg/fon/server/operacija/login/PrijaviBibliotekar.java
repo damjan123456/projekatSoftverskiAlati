@@ -1,29 +1,43 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rs.ac.bg.fon.server.operacija.login;
 
 import java.util.List;
 import rs.ac.bg.fon.zajednicki.model.Bibliotekar;
 import rs.ac.bg.fon.server.operacija.ApstraktnaGenerickaOperacija;
 
-
-
 /**
+ * Konkretna sistemska operacija zadužena za autentifikaciju i prijavu bibliotekara na sistem.
+ * Preuzima sve zapise iz baze podataka i vrši identifikaciju poklapanjem kredencijala.
  *
- * @author damja
+ * @author Damjan
  */
 public class PrijaviBibliotekar extends ApstraktnaGenerickaOperacija {
-    Bibliotekar bibliotekar;
+    
+    /**
+     * Objekat bibliotekara koji je uspešno identifikovan nakon prijave, ili null ako prijava ne uspe.
+     */
+    private Bibliotekar bibliotekar;
+
+    /**
+     * Podrazumevani konstruktor klase PrijaviBibliotekar.
+     */
+    public PrijaviBibliotekar() {
+    }
+
+    /**
+     * Proverava da li je prosleđeni objekat sa kredencijalima validan i spreman za dalju obradu.
+     */
     @Override
-    protected void preduslovi(Object param) throws Exception{
+    protected void preduslovi(Object param) throws Exception {
         if (param == null || !(param instanceof Bibliotekar))
             throw new Exception("Prijava nije moguca");
     }
 
+    /**
+     * Dobavlja sve bibliotekare iz baze podataka i iteracijom kroz listu pronalazi 
+     * onog koji odgovara prosleđenim parametrima.
+     */
     @Override
-    protected void izvrsiOperaciju(Object param) throws Exception{
+    protected void izvrsiOperaciju(Object param) throws Exception {
         List<Bibliotekar> bibliotekari = broker.getAll((Bibliotekar)param, null);
         System.out.println("KLASA LoginOperacija SO" + bibliotekari);
         
@@ -36,10 +50,12 @@ public class PrijaviBibliotekar extends ApstraktnaGenerickaOperacija {
         bibliotekar = null;
     }
 
+    /**
+     * Vraća autentifikovanog bibliotekara sa njegovim punim podacima iz baze podataka.
+     *
+     * @return Bibliotekar Objekat uspešno prijavljenog bibliotekara, ili {@code null}.
+     */
     public Bibliotekar getBibliotekar() {
         return bibliotekar;
     }
-    
-    
-    
 }

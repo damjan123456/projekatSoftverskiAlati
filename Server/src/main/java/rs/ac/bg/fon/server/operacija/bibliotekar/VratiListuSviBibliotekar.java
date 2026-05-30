@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rs.ac.bg.fon.server.operacija.bibliotekar;
 
 import java.util.List;
@@ -9,13 +5,27 @@ import rs.ac.bg.fon.zajednicki.model.Bibliotekar;
 import rs.ac.bg.fon.server.operacija.ApstraktnaGenerickaOperacija;
 
 /**
+ * Konkretna sistemska operacija koja realizuje preuzimanje liste svih bibliotekara iz baze podataka.
+ * Nasleđuje ApstraktnaGenerickaOperacija i sprovodi transakcionu logiku u okviru šablonske metode.
  *
- * @author damja
+ * @author Damjan
  */
 public class VratiListuSviBibliotekar extends ApstraktnaGenerickaOperacija {
-    List<Bibliotekar> bibliotekari;
+    
+    /**
+     * Interna lista u koju se smeštaju objekti klase Bibliotekar učitani iz baze.
+     */
+    private List<Bibliotekar> bibliotekari;
+
+    /**
+     * Podrazumevani konstruktor klase VratiListuSviBibliotekar.
+     */
+    public VratiListuSviBibliotekar() {
+    }
+
     @Override
     protected void preduslovi(Object objekat) throws Exception {
+        // Operacija preuzimanja svih zapisa nema specifične strukturne preduslove
     }
 
     @Override
@@ -23,6 +33,11 @@ public class VratiListuSviBibliotekar extends ApstraktnaGenerickaOperacija {
         bibliotekari = broker.getAll(new Bibliotekar(), null);
     }
 
+    /**
+     * Vraća listu svih bibliotekara učitanih nakon uspešnog izvršenja sistemske operacije.
+     *
+     * @return List Lista objekata tipa Bibliotekar.
+     */
     public List<Bibliotekar> getBibliotekari() {
         return bibliotekari;
     }

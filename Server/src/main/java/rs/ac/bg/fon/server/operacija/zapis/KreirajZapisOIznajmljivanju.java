@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rs.ac.bg.fon.server.operacija.zapis;
 
 import java.util.List;
@@ -10,11 +6,23 @@ import rs.ac.bg.fon.zajednicki.model.ZapisOIznajmljivanju;
 import rs.ac.bg.fon.server.operacija.ApstraktnaGenerickaOperacija;
 
 /**
+ * Konkretna sistemska operacija zadužena za kreiranje i perzistenciju novog dokumenta/zapisa 
+ * o iznajmljivanju knjiga, uključujući i sve pripadajuće stavke unutar jedne transakcije.
  *
  * @author damja
  */
 public class KreirajZapisOIznajmljivanju extends ApstraktnaGenerickaOperacija {
 
+    /**
+     * Podrazumevani konstruktor klase KreirajZapisOIznajmljivanju.
+     */
+    public KreirajZapisOIznajmljivanju() {
+    }
+
+    /**
+     * Proverava strukturne elemente i poslovna pravila nad zapisom o iznajmljivanju.
+     * Proverava datum, iznos, validnost asocijacije ka bibliotekaru i klijentu.
+     */
     @Override
     protected void preduslovi(Object objekat) throws Exception {
         if (objekat == null || !(objekat instanceof ZapisOIznajmljivanju)){
@@ -31,6 +39,10 @@ public class KreirajZapisOIznajmljivanju extends ApstraktnaGenerickaOperacija {
             throw new Exception("GRESKA CITALAC");
     }
 
+    /**
+     * Upisuje krovni zapis u bazu podataka, preuzima generisani auto-increment ključ, 
+     * a zatim taj ključ vezuje za svaku pojedinačnu stavku pre upisa u tabelu stavki.
+     */
     @Override
     protected void izvrsiOperaciju(Object objekat) throws Exception {
         ZapisOIznajmljivanju zapis = (ZapisOIznajmljivanju)objekat;
@@ -43,5 +55,4 @@ public class KreirajZapisOIznajmljivanju extends ApstraktnaGenerickaOperacija {
             broker.add(s);
         }
     }
-    
 }

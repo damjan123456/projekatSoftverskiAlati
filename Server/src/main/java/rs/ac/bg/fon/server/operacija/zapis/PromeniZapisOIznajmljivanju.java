@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rs.ac.bg.fon.server.operacija.zapis;
 
 import java.util.HashMap;
@@ -12,11 +8,25 @@ import rs.ac.bg.fon.zajednicki.model.ZapisOIznajmljivanju;
 import rs.ac.bg.fon.server.operacija.ApstraktnaGenerickaOperacija;
 
 /**
+ * Konkretna sistemska operacija zadužena za izmenu postojećeg zapisa o iznajmljivanju.
+ * Pored ažuriranja krovnog dokumenta, klasa sprovodi naprednu sinhronizaciju stavki 
+ * poređenjem trenutnog stanja u bazi sa novim stanjem (dodavanje novih, 
+ * ažuriranje izmenjenih i brisanje uklonjenih stavki).
  *
  * @author damja
  */
 public class PromeniZapisOIznajmljivanju extends ApstraktnaGenerickaOperacija {
 
+    /**
+     * Podrazumevani konstruktor klase PromeniZapisOIznajmljivanju.
+     */
+    public PromeniZapisOIznajmljivanju() {
+    }
+
+    /**
+     * Proverava preduslove za izmenu zapisa o iznajmljivanju.
+     * Zahteva ispravnost datuma, ukupnog iznosa, asociranog bibliotekara i čitaoca.
+     */
     @Override
     protected void preduslovi(Object objekat) throws Exception {
         if (objekat == null || !(objekat instanceof ZapisOIznajmljivanju)){
@@ -33,6 +43,11 @@ public class PromeniZapisOIznajmljivanju extends ApstraktnaGenerickaOperacija {
             throw new Exception("GRESKA CITALAC");
     }
 
+    /**
+     * Sinhronizuje stanje zapisa i stavki u bazi sa prosleđenim stanjem.
+     * Učitava stare stavke, mapira ih, a zatim kroz iteraciju novih stavki odlučuje 
+     * koje stavke idu na UPDATE, koje na INSERT, dok preostale stare stavke briše.
+     */
     @Override
     protected void izvrsiOperaciju(Object objekat) throws Exception {
         ZapisOIznajmljivanju zapis = (ZapisOIznajmljivanju)objekat;
@@ -61,8 +76,5 @@ public class PromeniZapisOIznajmljivanju extends ApstraktnaGenerickaOperacija {
         for (StavkaZapisaOIznajmljivanju s : mapaStarih.values()) {
             broker.delete(s);
         }
-
-
     }
-    
 }

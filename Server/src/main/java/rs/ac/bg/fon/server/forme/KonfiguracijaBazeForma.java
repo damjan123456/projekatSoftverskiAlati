@@ -7,13 +7,20 @@ package rs.ac.bg.fon.server.forme;
 import javax.swing.JOptionPane;
 
 /**
+ * Grafička komponenta (JDialog prozor) koja administratoru serverske aplikacije omogućava 
+ * dinamički pregled i promenu parametara konekcije sa bazom podataka (URL, korisničko ime i lozinka).
+ * Parametri se učitavaju i trajno skladište preko konfiguracione komponente sistema.
  *
- * @author damja
+ * @author Damjan
  */
 public class KonfiguracijaBazeForma extends javax.swing.JDialog {
 
     /**
-     * Creates new form KonfiguracijaBazeForma
+     * Kreira novu formu KonfiguracijaBazeForma u okviru roditeljskog frejma, postavlja modalnost 
+     * i učitava trenutne konfiguracione parametre iz properties fajla u polja na formi.
+     *
+     * @param parent Roditeljski prozor tipa java.awt.Frame.
+     * @param modal Logička vrednost koja određuje da li prozor blokira rad sa ostalim prozorima aplikacije.
      */
     public KonfiguracijaBazeForma(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -101,7 +108,12 @@ public class KonfiguracijaBazeForma extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Metoda pokrenuta na akciju klika dugmeta "Sacuvaj". Vrši preuzimanje unetih tekstualnih 
+     * podataka, upisuje ih u properties strukturu u memoriji i poziva trajnu izmenu na disku.
+     *
+     * @param evt Objekat akcionog događaja koji je inicirao poziv.
+     */
     private void jButtonSacuvajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSacuvajActionPerformed
         String url = jTextFieldURL.getText().trim();
         String username = jTextFieldUsername.getText().trim();

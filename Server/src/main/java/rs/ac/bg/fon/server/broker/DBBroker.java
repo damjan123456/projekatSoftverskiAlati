@@ -1,7 +1,3 @@
- /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rs.ac.bg.fon.server.broker;
 
 import java.sql.Statement;
@@ -12,17 +8,26 @@ import java.util.List;
 import rs.ac.bg.fon.zajednicki.model.ApstraktniDomenskiObjekat;
 
 /**
+ * Konkretna implementacija brokera baze podataka koja koristi sirovi JDBC za komunikaciju.
+ * Realizuje generičke metode oslanjajući se na šablon ApstraktniDomenskiObjekat, 
+ * gde svaki objekat sam generiše delove SQL upita koji su specifični za njegovu strukturu.
  *
- * @author damja
+ * @author Damjan
  */
 public class DBBroker implements DBBrokerInterfejs<ApstraktniDomenskiObjekat> {
 
+    /**
+     * Podrazumevani konstruktor klase DBBroker.
+     */
+    public DBBroker() {
+    }
+
     @Override
-    public List<ApstraktniDomenskiObjekat> getAll(ApstraktniDomenskiObjekat param,String uslov) throws Exception {
+    public List<ApstraktniDomenskiObjekat> getAll(ApstraktniDomenskiObjekat param, String uslov) throws Exception {
         List<ApstraktniDomenskiObjekat> lista = new ArrayList<>();
         
         String upit = "SELECT * FROM " + param.vratiNazivTabele();
-        if (uslov!=null){
+        if (uslov != null) {
             upit += uslov;
         }
         System.out.println(upit);
@@ -63,11 +68,11 @@ public class DBBroker implements DBBrokerInterfejs<ApstraktniDomenskiObjekat> {
     }
 
     @Override
-    public int addReturnKey(ApstraktniDomenskiObjekat param) throws Exception{
+    public int addReturnKey(ApstraktniDomenskiObjekat param) throws Exception {
         String upit = "INSERT INTO " + param.vratiNazivTabele() + " (" + param.vratiKoloneZaUbacivanje() + 
                       ") VALUES " + param.vratiVrednostiZaUbacivanje();
         System.out.println(upit);
-        PreparedStatement ps = DbKonekcija.getInstance().getConnection().prepareStatement(upit,Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement ps = DbKonekcija.getInstance().getConnection().prepareStatement(upit, Statement.RETURN_GENERATED_KEYS);
         ps.executeUpdate();
         ResultSet rs = ps.getGeneratedKeys();
         int id = -1;
@@ -77,11 +82,5 @@ public class DBBroker implements DBBrokerInterfejs<ApstraktniDomenskiObjekat> {
         ps.close();
         
         return id;
-        
     }
-
-    
-
-    
-    
 }

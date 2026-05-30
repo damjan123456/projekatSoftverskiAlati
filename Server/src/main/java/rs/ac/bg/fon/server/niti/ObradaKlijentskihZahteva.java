@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rs.ac.bg.fon.server.niti;
 
 import com.google.gson.Gson;
@@ -26,15 +22,41 @@ import rs.ac.bg.fon.zajednicki.model.Sertifikat;
 import rs.ac.bg.fon.zajednicki.model.ZapisOIznajmljivanju;
 
 /**
+ * Predstavlja aktivnu klijentsku nit na serveru zaduženu za neprekidnu komunikaciju 
+ * sa jednim konkretnim klijentom preko mrežnog soketa.
+ * Nit asinhrono prima zahteve u JSON formatu, parsira ih preko Gson biblioteke, prosleđuje 
+ * kontroleru na izvršavanje i šalje povratni odgovor klijentu.
  *
- * @author damja
+ * @author Damjan
  */
 public class ObradaKlijentskihZahteva extends Thread {
+    
+    /**
+     * Komunikacioni soket preko kojeg je uspostavljena veza sa klijentom.
+     */
     private final Socket socket;
+    
+    /**
+     * Pomoćni objekat za slanje podataka klijentu preko mrežnog toka.
+     */
     private final Posiljalac posiljalac;
+    
+    /**
+     * Pomoćni objekat za prijem podataka od klijenta preko mrežnog toka.
+     */
     private final Primalac primalac;
+    
+    /**
+     * Logička kontrolna promenljiva koja određuje kada petlja za komunikaciju treba da se prekine.
+     */
     private boolean kraj = false;
 
+    /**
+     * Kreira novu nit za obradu zahteva, povezuje je sa soketom klijenta i inicijalizuje 
+     * tokove za slanje i prijem podataka.
+     *
+     * @param socket Otvoreni komunikacioni soket ka klijentu.
+     */
     public ObradaKlijentskihZahteva(Socket socket) {
         this.socket = socket;
         posiljalac = new Posiljalac(socket);
@@ -204,6 +226,10 @@ public class ObradaKlijentskihZahteva extends Thread {
         }
     }
     
+    /**
+     * Bezbedno prekida izvršavanje klijentske niti, postavlja kontrolni fleg na kraj rada 
+     * i zatvara komunikacioni soket.
+     */
     public void prekiniNit(){
         kraj = true;
         try {
@@ -213,5 +239,4 @@ public class ObradaKlijentskihZahteva extends Thread {
         }
         interrupt();
     }
- 
 }

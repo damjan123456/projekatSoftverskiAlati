@@ -7,13 +7,20 @@ package rs.ac.bg.fon.server.forme;
 import rs.ac.bg.fon.server.server.Server;
 
 /**
+ * Glavna grafička forma serverskog dela aplikacije (JFrame).
+ * Predstavlja kontrolnu tablu preko koje korisnik (administrator) može da pokreće i zaustavlja 
+ * centralni aplikacioni server (serversku nit) i prati trenutni status sistema, kao i da otvara forme za konfiguraciju.
  *
- * @author damja
+ * @author Damjan
  */
 public class ServerskaForma extends javax.swing.JFrame {
+    /**
+     * Referenca na serversku nit koja osluškuje i prihvata klijentske zahteve.
+     */
     private Server server;
     /**
-     * Creates new form ServerskaForma
+     * Kreira novu ServerskaForma, inicijalizuje grafičke komponente, kreira objekat 
+     * Server i inicijalno onemogućava dugme za zaustavljanje jer server startuje u ugašenom stanju.
      */
     public ServerskaForma() {
         initComponents();
@@ -107,12 +114,21 @@ public class ServerskaForma extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Akciona metoda koja otvara modalni dijalog za konfigurisanje parametara konekcije sa bazom podataka.
+     *
+     * @param evt Objekat akcionog događaja.
+     */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
        KonfiguracijaBazeForma baza = new KonfiguracijaBazeForma(this, false);
        baza.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-
+    /**
+     * Akciona metoda zadužena za pokretanje aplikacionog servera. Ukoliko server nit ne postoji ili nije 
+     * aktivna, kreira se nova instanca niti, startuje se i ažurira se vizuelni status na formi.
+     *
+     * @param evt Objekat akcionog događaja.
+     */
     private void jButtonPokreniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPokreniActionPerformed
         if (server == null || !server.isAlive()){
             server = new Server();
@@ -123,7 +139,12 @@ public class ServerskaForma extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jButtonPokreniActionPerformed
-
+    /**
+     * Akciona metoda zadužena za bezbedno zaustavljanje i gašenje aplikacionog servera. Poziva metodu za prekid 
+     * osluškivanja unutar niti servera, uništava referencu i osvežava stanje grafičkih kontrola.
+     *
+     * @param evt Objekat akcionog događaja.
+     */
     private void jButtonZaustaviActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonZaustaviActionPerformed
         if (server != null && server.isAlive()){
             server.zaustaviServer();
