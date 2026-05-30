@@ -1,16 +1,25 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rs.ac.bg.fon.klijent.main;
 
 import rs.ac.bg.fon.klijent.glavnikontroler.GlavniKontroler;
 
 /**
- *
- * @author damja
+ * Glavna pokretačka klasa klijentskog dela aplikacije.
+ * Služi kao ulazna tačka programa koja inicira izvršavanje i pokreće korisnički interfejs.
+ * * @author Damjan
  */
 public class Main {
+    
+    /**
+     * Podrazumevani konstruktor klase Main.
+     */
+    public Main() {
+    }
+
+    /**
+     * Glavna metoda koja se poziva prilikom startovanja klijentske aplikacije.
+     * Preko jedinstvene instance GlavnogKontrolera inicira otvaranje forme za prijavu korisnika.
+     * * @param args Argumenti komandne linije prosleđeni prilikom pokretanja aplikacije (ne koriste se).
+     */
     public static void main(String[] args) {
         GlavniKontroler.getInstanca().otvoriLoginFormu();
     }

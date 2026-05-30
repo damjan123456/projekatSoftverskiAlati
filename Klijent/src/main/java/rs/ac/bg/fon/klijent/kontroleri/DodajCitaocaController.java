@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rs.ac.bg.fon.klijent.kontroleri;
 
 import rs.ac.bg.fon.klijent.forme.DodajCitaocaForma;
@@ -20,26 +16,45 @@ import rs.ac.bg.fon.zajednicki.model.Citalac;
 import rs.ac.bg.fon.zajednicki.model.Mesto;
 
 /**
- *
- * @author damja
+ * Kontroler zadužen za upravljanje formom za unos, izmenu i prikaz detalja o čitaocu.
+ * Koordinira interakciju između korisničkog interfejsa i mrežne komunikacije.
+ * * @author Damjan
  */
 public class DodajCitaocaController {
+    
+    /**
+     * Grafička forma za upravljanje podacima o čitaocu.
+     */
     private final DodajCitaocaForma dcf;
+    
+    /**
+     * Identifikator čitaoca koji se trenutno menja ili čiji se detalji prikazuju.
+     */
     private int id;
 
+    /**
+     * Konstruktor koji inicijalizuje formu i registruje osluškivače događaja na komponente.
+     * @param dcf Grafička forma za unos i izmenu čitaoca.
+     */
     public DodajCitaocaController(DodajCitaocaForma dcf) {
         this.dcf = dcf;
         addActionListener();
-       
     }
 
+    /**
+     * Priprema grafički prikaz forme u zavisnosti od režima rada i čini formu vidljivom korisniku.
+     * * @param mod Režim rada forme (DODAJ, IZMENI ili DETALJI).
+     */
     public void otvoriFormu(FormaModovi mod) {
         pripremiFormu(mod);
         dcf.setVisible(true);
         dcf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        
     }
 
+    /**
+     * Podešava vidljivost dugmića, dostupnost polja za unos i puni padajuće menije u zavisnosti od prosleđenog moda.
+     * * @param mod Režim rada koji diktira ponašanje komponenti.
+     */
     private void pripremiFormu(FormaModovi mod) {
         switch (mod) {
             case DODAJ:
@@ -78,36 +93,31 @@ public class DodajCitaocaController {
                     id = c.getIdCitalac();
                     napuniCombo();
                     dcf.getjComboBoxMesta().setSelectedItem(c.getMesto());
-//            List<Mesto> mesta = Komunikacija.getInstanca().vratiMesta();
-//            for (Mesto m : mesta) {
-//                if (m.equals(c.getMesto())){
-//                    dcf.getjComboBoxMesta().setSelectedItem(m);
-//                    break;
-//                }
-//            }
                     break;
                 }
         }
-        
     }
 
+    /**
+     * Registruje akcione osluškivače na dugmiće za dodavanje i izmenu podataka o čitaocu.
+     */
     private void addActionListener() {
         dcf.dodajActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                String ime =  dcf.getjTextFieldIme().getText().strip();
+                String ime = dcf.getjTextFieldIme().getText().strip();
                 String prezime = dcf.getjTextFieldPrezime().getText().strip();
                 String brojTel = dcf.getjTextFieldBrojTel().getText().strip();
                 Mesto mesto = (Mesto) (dcf.getjComboBoxMesta().getSelectedItem());
-                Citalac citalac = new Citalac(ime,prezime,brojTel,mesto);
+                Citalac citalac = new Citalac(ime, prezime, brojTel, mesto);
                 
                 try{
                     Komunikacija.getInstanca().unesiCitaoca(citalac);
-                    JOptionPane.showMessageDialog(dcf, "Sistem je zapamtio citaoca","USPEH",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(dcf, "Sistem je zapamtio citaoca", "USPEH", JOptionPane.INFORMATION_MESSAGE);
                     FormaModovi mod = FormaModovi.DODAJ;
                     pripremiFormu(mod);
                 }catch(Exception ex){
-                    JOptionPane.showMessageDialog(dcf, "Sistem ne moze da zapamti citaoca","GRESKA",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dcf, "Sistem ne moze da zapamti citaoca", "GRESKA", JOptionPane.ERROR_MESSAGE);
                 }
             }    
         });
@@ -115,25 +125,27 @@ public class DodajCitaocaController {
         dcf.izmeniActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                String ime =  dcf.getjTextFieldIme().getText().strip();
+                String ime = dcf.getjTextFieldIme().getText().strip();
                 String prezime = dcf.getjTextFieldPrezime().getText().strip();
                 String brojTel = dcf.getjTextFieldBrojTel().getText().strip();
                 Mesto mesto = (Mesto) (dcf.getjComboBoxMesta().getSelectedItem());
-                Citalac citalac = new Citalac(ime,prezime,brojTel,mesto);
+                Citalac citalac = new Citalac(ime, prezime, brojTel, mesto);
                 citalac.setIdCitalac(id);
                 
                 try{
                     Komunikacija.getInstanca().izmeniCitaoca(citalac);
-                    JOptionPane.showMessageDialog(dcf, "Sistem je zapamtio citaoca","USPEH",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(dcf, "Sistem je zapamtio citaoca", "USPEH", JOptionPane.INFORMATION_MESSAGE);
                     dcf.dispose();
                 }catch(Exception ex){
-                    JOptionPane.showMessageDialog(dcf, "Sistem ne moze da zapamti citaoca","GRESKA",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dcf, "Sistem ne moze da zapamti citaoca", "GRESKA", JOptionPane.ERROR_MESSAGE);
                 }
             }
-            
         });
     }
     
+    /**
+     * Preuzima listu svih mesta sa servera i puni padajući meni unutar grafičke forme.
+     */
     private void napuniCombo(){
         List<Mesto> mesta = new ArrayList<>();
         try {

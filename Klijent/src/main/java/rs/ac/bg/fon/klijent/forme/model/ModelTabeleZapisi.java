@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rs.ac.bg.fon.klijent.forme.model;
 
 import java.util.List;
@@ -9,33 +5,65 @@ import javax.swing.table.AbstractTableModel;
 import rs.ac.bg.fon.zajednicki.model.ZapisOIznajmljivanju;
 
 /**
- *
- * @author damja
+ * Model tabele namenjen pregledu, pretrazi i filtriranju svih kreiranih zapisa o iznajmljivanju knjiga.
+ * Povezuje i vizuelno spaja podatke o datumu, iznosu, pripadajućem čitaocu i zaduženom bibliotekaru.
+ * * @author Damjan
  */
 public class ModelTabeleZapisi extends AbstractTableModel {
+    
+    /**
+     * Lista svih glavnih zapisa o iznajmljivanju unutar modela.
+     */
     List<ZapisOIznajmljivanju> lista;
-    String[] kolone = {"ID","Datum iznajmljivanja","Ukupan iznos","Citalac","Bibliotekar"};
+    
+    /**
+     * Nazivi kolona tabele za prikaz podataka o zaglavljima zapisa.
+     */
+    String[] kolone = {"ID", "Datum iznajmljivanja", "Ukupan iznos", "Citalac", "Bibliotekar"};
 
+    /**
+     * Konstruktor koji postavlja početni skup zapisa o iznajmljivanju za vizuelni prikaz.
+     * @param lista Lista zapisa o iznajmljivanju.
+     */
     public ModelTabeleZapisi(List<ZapisOIznajmljivanju> lista) {
         this.lista = lista;
     }
     
+    /**
+     * Vraća broj zapisa koji su trenutno filtrirani i dostupni u tabeli.
+     * @return Broj redova kao int.
+     */
     @Override
     public int getRowCount() {
         return lista.size();
     }
 
+    /**
+     * Vraća broj stubaca tabele sa zapisima.
+     * @return Broj kolona kao int.
+     */
     @Override
     public int getColumnCount() {
         return kolone.length;
     }
 
+    /**
+     * Vraća naslov kolone na osnovu njenog pozicionog indeksa.
+     * @param column Indeks kolone.
+     * @return Naziv kolone.
+     */
     @Override
     public String getColumnName(int column) {
         return kolone[column];
     }
     
-
+    /**
+     * Mapira atribute objekta klase ZapisOIznajmljivanju na adekvatne kolone u JTable komponenti, 
+     * spajajući ime i prezime za aktere.
+     * @param rowIndex Indeks selektovanog reda.
+     * @param columnIndex Indeks kolone za mapiranje podatka.
+     * @return Vrednost ćelije u zavisnosti od izabranog stubca.
+     */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         ZapisOIznajmljivanju zapis = lista.get(rowIndex);
@@ -46,7 +74,8 @@ public class ModelTabeleZapisi extends AbstractTableModel {
                     java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd.MM.yyyy.");
                     yield sdf.format(zapis.getDatumIznajmljivanja());
                 }
-                yield "";}
+                yield "";
+            }
             case 2 -> zapis.getUkupanIznos();
             case 3 -> zapis.getCitalac().getIme() + " " + zapis.getCitalac().getPrezime();
             case 4 -> zapis.getBibliotekar().getIme() + " " + zapis.getBibliotekar().getPrezime();
@@ -54,39 +83,33 @@ public class ModelTabeleZapisi extends AbstractTableModel {
         };
     }
 
+    /**
+     * Vraća listu zapisa o iznajmljivanju sadržanu u ovom modelu tabele.
+     * @return Lista objekata klase ZapisOIznajmljivanju.
+     */
     public List<ZapisOIznajmljivanju> getLista() {
         return lista;
     }
 
-//    public boolean pretrazi(String ime, String prezime, Mesto mesto) {
-//        List<ZapisOIznajmljivanju> filtrirani = lista.stream()
-//            .filter(c -> ime == null || ime.isEmpty() || c.getIme().toLowerCase().contains(ime.toLowerCase()))
-//            .filter(c -> prezime == null || prezime.isEmpty() || c.getPrezime().toLowerCase().contains(prezime.toLowerCase()))
-//            .filter(c -> mesto == null || c.getMesto().getNaziv().equalsIgnoreCase(mesto.getNaziv()))
-//            .toList();
-//        lista = filtrirani;
-//        fireTableDataChanged();
-//        if (lista.isEmpty())
-//            return false;
-//        return true;
-//    }
-
+    /**
+     * Izvršava filtriranje i pretragu svih zapisa na osnovu delimičnog imena ili prezimena čitaoca i bibliotekara.
+     * Rezultat pretrage se trenutno primenjuje i osvežava vizuelnu komponentu.
+     * @param filterCitalac Tekstualni filter za ime ili prezime čitaoca.
+     * @param filterBibliotekar Tekstualni filter za ime ili prezime bibliotekara.
+     * @return true ukoliko nakon filtriranja postoji barem jedan zapis koji ispunjava uslove, inače false.
+     */
     public boolean pretrazi(String filterCitalac, String filterBibliotekar) {
-    
-    List<ZapisOIznajmljivanju> filtrirani = lista.stream()
-    .filter(z -> (filterCitalac == null || filterCitalac.isEmpty() ||
-                  z.getCitalac().getIme().toLowerCase().contains(filterCitalac.toLowerCase()) ||
-                  z.getCitalac().getPrezime().toLowerCase().contains(filterCitalac.toLowerCase())))
-    .filter(z -> (filterBibliotekar == null || filterBibliotekar.isEmpty() ||
-                  z.getBibliotekar().getIme().toLowerCase().contains(filterBibliotekar.toLowerCase()) ||
-                  z.getBibliotekar().getPrezime().toLowerCase().contains(filterBibliotekar.toLowerCase())))
-    .toList();
+        List<ZapisOIznajmljivanju> filtrirani = lista.stream()
+            .filter(z -> (filterCitalac == null || filterCitalac.isEmpty() ||
+                          z.getCitalac().getIme().toLowerCase().contains(filterCitalac.toLowerCase()) ||
+                          z.getCitalac().getPrezime().toLowerCase().contains(filterCitalac.toLowerCase())))
+            .filter(z -> (filterBibliotekar == null || filterBibliotekar.isEmpty() ||
+                          z.getBibliotekar().getIme().toLowerCase().contains(filterBibliotekar.toLowerCase()) ||
+                          z.getBibliotekar().getPrezime().toLowerCase().contains(filterBibliotekar.toLowerCase())))
+            .toList();
 
-    lista = filtrirani;
-    fireTableDataChanged();
-    return !lista.isEmpty();
-}
-
-
-    
+        lista = filtrirani;
+        fireTableDataChanged();
+        return !lista.isEmpty();
+    }   
 }
