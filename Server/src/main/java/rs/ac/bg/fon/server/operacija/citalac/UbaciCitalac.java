@@ -1,6 +1,7 @@
 package rs.ac.bg.fon.server.operacija.citalac;
 
 import rs.ac.bg.fon.zajednicki.model.Citalac;
+import rs.ac.bg.fon.server.broker.DBBrokerInterfejs;
 import rs.ac.bg.fon.server.operacija.ApstraktnaGenerickaOperacija;
 
 /**
@@ -15,6 +16,13 @@ public class UbaciCitalac extends ApstraktnaGenerickaOperacija {
      * Podrazumevani konstruktor klase UbaciCitalac.
      */
     public UbaciCitalac() {
+    }
+
+    /**
+     * Konstruktor za potrebe testiranja
+     */
+    public UbaciCitalac(DBBrokerInterfejs broker) {
+        super(broker);
     }
 
     /**

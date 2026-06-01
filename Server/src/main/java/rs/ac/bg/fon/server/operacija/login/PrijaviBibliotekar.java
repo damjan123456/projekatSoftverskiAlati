@@ -24,6 +24,13 @@ public class PrijaviBibliotekar extends ApstraktnaGenerickaOperacija {
     }
 
     /**
+     * Konstruktor za potrebe testiranja
+     */
+    public PrijaviBibliotekar(rs.ac.bg.fon.server.broker.DBBrokerInterfejs broker) {
+        super(broker);
+    }
+
+    /**
      * Proverava da li je prosleđeni objekat sa kredencijalima validan i spreman za dalju obradu.
      */
     @Override

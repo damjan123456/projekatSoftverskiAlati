@@ -2,6 +2,7 @@ package rs.ac.bg.fon.server.operacija.knjiga;
 
 import java.util.List;
 import rs.ac.bg.fon.zajednicki.model.Knjiga;
+import rs.ac.bg.fon.server.broker.DBBrokerInterfejs;
 import rs.ac.bg.fon.server.operacija.ApstraktnaGenerickaOperacija;
 
 /**
@@ -20,6 +21,13 @@ public class VratiListuSviKnjiga extends ApstraktnaGenerickaOperacija {
      * Podrazumevani konstruktor klase VratiListuSviKnjiga.
      */
     public VratiListuSviKnjiga() {
+    }
+
+    /**
+     * Konstruktor za potrebe testiranja
+     */
+    public VratiListuSviKnjiga(DBBrokerInterfejs broker) {
+        super(broker);
     }
 
     @Override

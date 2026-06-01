@@ -18,6 +18,13 @@ public class UbaciSertifikat extends ApstraktnaGenerickaOperacija {
     }
 
     /**
+     * Konstruktor za potrebe testiranja
+     */
+    public UbaciSertifikat(rs.ac.bg.fon.server.broker.DBBrokerInterfejs broker) {
+        super(broker);
+    }
+
+    /**
      * Validira strukturu i tekstualne atribute objekta sertifikata.
      * Zahteva prisustvo institucije izdavaoca i naziva samog sertifikata.
      */

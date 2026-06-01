@@ -24,6 +24,14 @@ public abstract class ApstraktnaGenerickaOperacija {
     public ApstraktnaGenerickaOperacija() {
         this.broker = new DBBroker();
     }
+
+    /**
+     * Konstruktor koji omogućava ubacivanje mock brokera.
+     * Koristićemo ga isključivo u JUnit testovima.
+     */
+    protected ApstraktnaGenerickaOperacija(DBBrokerInterfejs broker) {
+        this.broker = broker;
+    }
     
     /**
      * Šablonska metoda koja definiše fiksni kostur izvršenja svake sistemske operacije.

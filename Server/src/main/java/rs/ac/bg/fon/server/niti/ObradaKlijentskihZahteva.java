@@ -65,7 +65,7 @@ public class ObradaKlijentskihZahteva extends Thread {
 
     @Override
     public void run() {
-        Gson gson = new GsonBuilder().setDateFormat("yyy-MM-dd").create();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
         while(!kraj){
             try {   

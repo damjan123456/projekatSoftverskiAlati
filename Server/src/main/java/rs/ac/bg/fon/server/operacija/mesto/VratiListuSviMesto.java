@@ -23,6 +23,13 @@ public class VratiListuSviMesto extends ApstraktnaGenerickaOperacija {
     public VratiListuSviMesto() {
     }
 
+    /**
+     * Konstruktor za potrebe testiranja
+     */
+    public VratiListuSviMesto(rs.ac.bg.fon.server.broker.DBBrokerInterfejs broker) {
+        super(broker);
+    }
+
     @Override
     protected void preduslovi(Object objekat) throws Exception {
         // Operacija preuzimanja svih mesta nema specifične preduslove

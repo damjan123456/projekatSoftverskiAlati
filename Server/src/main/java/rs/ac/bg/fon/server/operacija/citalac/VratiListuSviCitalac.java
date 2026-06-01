@@ -2,6 +2,7 @@ package rs.ac.bg.fon.server.operacija.citalac;
 
 import java.util.List;
 import rs.ac.bg.fon.zajednicki.model.Citalac;
+import rs.ac.bg.fon.server.broker.DBBrokerInterfejs;
 import rs.ac.bg.fon.server.operacija.ApstraktnaGenerickaOperacija;
 
 /**
@@ -21,6 +22,12 @@ public class VratiListuSviCitalac extends ApstraktnaGenerickaOperacija {
      * Podrazumevani konstruktor klase VratiListuSviCitalac.
      */
     public VratiListuSviCitalac() {
+    }
+    /**
+     * Konstruktor za potrebe testiranja
+     */
+    public VratiListuSviCitalac(DBBrokerInterfejs broker) {
+        super(broker);
     }
 
     @Override
