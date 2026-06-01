@@ -5,7 +5,6 @@
 package rs.ac.bg.fon.klijent.forme;
 
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
