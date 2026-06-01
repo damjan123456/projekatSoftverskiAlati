@@ -25,6 +25,13 @@ public class PretraziZapisOIznajmljivanju extends ApstraktnaGenerickaOperacija {
     }
 
     /**
+    * Konstruktor za potrebe testiranja
+    */
+    public PretraziZapisOIznajmljivanju(rs.ac.bg.fon.server.broker.DBBrokerInterfejs broker) {
+        super(broker);
+    }
+
+    /**
      * Validira parametre pretrage i proverava prisustvo ključnih identifikacionih i opisnih polja zapisa.
      */
     @Override

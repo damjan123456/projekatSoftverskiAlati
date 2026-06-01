@@ -20,6 +20,13 @@ public class KreirajZapisOIznajmljivanju extends ApstraktnaGenerickaOperacija {
     }
 
     /**
+     * Konstruktor za potrebe testiranja
+     */
+    public KreirajZapisOIznajmljivanju(rs.ac.bg.fon.server.broker.DBBrokerInterfejs broker) {
+        super(broker);
+    }
+
+    /**
      * Proverava strukturne elemente i poslovna pravila nad zapisom o iznajmljivanju.
      * Proverava datum, iznos, validnost asocijacije ka bibliotekaru i klijentu.
      */

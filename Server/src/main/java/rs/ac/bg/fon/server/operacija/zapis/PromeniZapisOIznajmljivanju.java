@@ -24,6 +24,13 @@ public class PromeniZapisOIznajmljivanju extends ApstraktnaGenerickaOperacija {
     }
 
     /**
+     * Konstruktor za potrebe testiranja
+     */
+    public PromeniZapisOIznajmljivanju(rs.ac.bg.fon.server.broker.DBBrokerInterfejs broker) {
+        super(broker);
+    }
+    
+    /**
      * Proverava preduslove za izmenu zapisa o iznajmljivanju.
      * Zahteva ispravnost datuma, ukupnog iznosa, asociranog bibliotekara i čitaoca.
      */

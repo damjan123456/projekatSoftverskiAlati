@@ -23,6 +23,13 @@ public class VratiListuZapisOIznajmljivanju extends ApstraktnaGenerickaOperacija
     public VratiListuZapisOIznajmljivanju() {
     }
 
+    /**
+     * Konstruktor za potrebe testiranja
+     */
+    public VratiListuZapisOIznajmljivanju(rs.ac.bg.fon.server.broker.DBBrokerInterfejs broker) {
+        super(broker);
+    }
+
     @Override
     protected void preduslovi(Object objekat) throws Exception {
         // Operacija preuzimanja svih zapisa nema predefinisane strukturne preduslove
