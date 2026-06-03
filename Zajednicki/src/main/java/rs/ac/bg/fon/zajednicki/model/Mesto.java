@@ -35,8 +35,8 @@ public class Mesto implements ApstraktniDomenskiObjekat {
      * @param naziv Naziv mesta.
      */
     public Mesto(int idMesto, String naziv) {
-        this.idMesto = idMesto;
-        this.naziv = naziv;
+        setIdMesto(idMesto);
+        setNaziv(naziv);
     }
 
     /**
@@ -66,8 +66,12 @@ public class Mesto implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja naziv mesta.
      * @param naziv Naziv mesta.
+     * @throws IllegalArgumentException Ukoliko je naziv null ili prazan string.
      */
     public void setNaziv(String naziv) {
+        if (naziv == null || naziv.trim().isEmpty()) {
+            throw new IllegalArgumentException("Naziv mesta ne sme biti null niti prazan.");
+        }
         this.naziv = naziv;
     }
 

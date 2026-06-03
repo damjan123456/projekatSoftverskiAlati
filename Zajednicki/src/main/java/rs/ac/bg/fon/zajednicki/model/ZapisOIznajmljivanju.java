@@ -59,11 +59,11 @@ public class ZapisOIznajmljivanju implements ApstraktniDomenskiObjekat {
      */
     public ZapisOIznajmljivanju(Date datumIznajmljivanja, double ukupanIznos,
             Bibliotekar bibliotekar, Citalac citalac, List<StavkaZapisaOIznajmljivanju> stavke) {
-        this.datumIznajmljivanja = datumIznajmljivanja;
-        this.ukupanIznos = ukupanIznos;
-        this.bibliotekar = bibliotekar;
-        this.citalac = citalac;
-        this.stavke = stavke;
+        setDatumIznajmljivanja(datumIznajmljivanja);
+        setUkupanIznos(ukupanIznos);
+        setBibliotekar(bibliotekar);
+        setCitalac(citalac);
+        setStavke(stavke);
     }
 
     /**
@@ -93,8 +93,12 @@ public class ZapisOIznajmljivanju implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja datum iznajmljivanja knjiga.
      * @param datumIznajmljivanja Datum iznajmljivanja.
+     * @throws java.lang.IllegalArgumentException Ako je datum iznajmljivanja null, baca se izuzetak.
      */
     public void setDatumIznajmljivanja(Date datumIznajmljivanja) {
+        if (datumIznajmljivanja == null) {
+            throw new IllegalArgumentException("Datum iznajmljivanja ne sme biti null.");
+        }
         this.datumIznajmljivanja = datumIznajmljivanja;
     }
 
@@ -109,8 +113,12 @@ public class ZapisOIznajmljivanju implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja ukupan iznos za ceo zapis.
      * @param ukupanIznos Ukupan novčani iznos.
+     * @throws java.lang.IllegalArgumentException Ako je ukupan iznos negativan, baca se izuzetak.
      */
     public void setUkupanIznos(double ukupanIznos) {
+        if (ukupanIznos < 0) {
+            throw new IllegalArgumentException("Ukupan iznos ne sme biti negativan.");
+        }
         this.ukupanIznos = ukupanIznos;
     }
 
@@ -127,6 +135,9 @@ public class ZapisOIznajmljivanju implements ApstraktniDomenskiObjekat {
      * @param bibliotekar Angažovani bibliotekar.
      */
     public void setBibliotekar(Bibliotekar bibliotekar) {
+        if (bibliotekar == null) {
+            throw new IllegalArgumentException("Bibliotekar ne sme biti null.");
+        }
         this.bibliotekar = bibliotekar;
     }
 
@@ -141,8 +152,12 @@ public class ZapisOIznajmljivanju implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja čitaoca na koga glasi zapis.
      * @param citalac Član biblioteke.
+     * @throws java.lang.IllegalArgumentException Ako je čitalac null, baca se izuzetak.
      */
     public void setCitalac(Citalac citalac) {
+        if (citalac == null) {
+            throw new IllegalArgumentException("Citalac ne sme biti null.");
+        }
         this.citalac = citalac;
     }
 
@@ -157,8 +172,12 @@ public class ZapisOIznajmljivanju implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja listu stavki za ovaj zapis o iznajmljivanju.
      * @param stavke Lista stavki.
+     * @throws java.lang.IllegalArgumentException Ako je lista stavki null ili prazna, baca se izuzetak.
      */
     public void setStavke(List<StavkaZapisaOIznajmljivanju> stavke) {
+        if (stavke == null || stavke.size() == 0) {
+            throw new IllegalArgumentException("Lista stavki ne sme biti null ili prazna.");
+        }
         this.stavke = stavke;
     }
 

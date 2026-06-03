@@ -52,10 +52,10 @@ public class Citalac implements ApstraktniDomenskiObjekat {
      * @param mesto Objekat klase Mesto u kome čitalac živi.
      */
     public Citalac(String ime, String prezime, String brojTel, Mesto mesto) {
-        this.ime = ime;
-        this.prezime = prezime;
-        this.brojTel = brojTel;
-        this.mesto = mesto;
+        setIme(ime);
+        setPrezime(prezime);
+        setBrojTel(brojTel);
+        setMesto(mesto);
     }
 
     /**
@@ -85,8 +85,16 @@ public class Citalac implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja ime čitaoca.
      * @param ime Ime čitaoca.
+     * @throws java.lang.IllegalArgumentException Ukoliko je prosleđeno ime null ili prazno. 
+     * @throws java.lang.IllegalArgumentException Ukoliko je prosleđeno ime kraće od 5 karaktera.
      */
     public void setIme(String ime) {
+        if (ime == null || ime.trim().isEmpty()) {
+            throw new IllegalArgumentException("Ime čitaoca ne sme biti null niti prazno.");
+        }
+        if (ime.trim().length() <= 2) {
+            throw new IllegalArgumentException("Ime čitaoca mora imati više od 2 karaktera.");
+        }
         this.ime = ime;
     }
 
@@ -101,8 +109,16 @@ public class Citalac implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja prezime čitaoca.
      * @param prezime Prezime čitaoca.
+     * @throws java.lang.IllegalArgumentException Ukoliko je prosleđeno prezime null ili prazno.
+     * @throws java.lang.IllegalArgumentException Ukoliko je prosleđeno prezime kraće od 5 karaktera.
      */
     public void setPrezime(String prezime) {
+        if (prezime == null || prezime.trim().isEmpty()) {
+            throw new IllegalArgumentException("Prezime čitaoca ne sme biti null niti prazno.");
+        }
+        if (prezime.trim().length() <= 2) {
+            throw new IllegalArgumentException("Prezime čitaoca mora imati više od 2 karaktera.");
+        }
         this.prezime = prezime;
     }
 
@@ -117,8 +133,16 @@ public class Citalac implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja kontakt telefon čitaoca.
      * @param brojTel Broj telefona čitaoca.
+     * @throws java.lang.IllegalArgumentException Ukoliko je prosleđeni broj telefona null ili prazan.
+     * @throws java.lang.IllegalArgumentException Ukoliko broj telefona nema 9 ili 10 cifara.
      */
     public void setBrojTel(String brojTel) {
+        if (brojTel == null || brojTel.trim().isEmpty()) {
+            throw new IllegalArgumentException("Broj telefona ne sme biti null ili prazan.");
+        }
+        if (brojTel.trim().length() < 9 || brojTel.trim().length() > 10) {
+            throw new IllegalArgumentException("Broj mora imati 9 ili 10 cifara.");
+        }
         this.brojTel = brojTel;
     }
 
@@ -133,8 +157,12 @@ public class Citalac implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja geografsko mesto stanovanja čitaoca.
      * @param mesto Objekat mesta koji se dodeljuje čitaocu.
+     * @throws java.lang.IllegalArgumentException Ukoliko je prosleđeni objekat mesta null.
      */
     public void setMesto(Mesto mesto) {
+        if (mesto == null) {
+            throw new IllegalArgumentException("Mesto čitaoca ne sme biti null.");
+        }
         this.mesto = mesto;
     }
 

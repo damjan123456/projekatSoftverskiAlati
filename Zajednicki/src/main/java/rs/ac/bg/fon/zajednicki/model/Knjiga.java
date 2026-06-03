@@ -48,10 +48,10 @@ public class Knjiga implements ApstraktniDomenskiObjekat {
      * @param cenaZaNepovracaj Cena za nepovraćaj knjige.
      */
     public Knjiga(int idKnjiga, String naslov, String autor, double cenaZaNepovracaj) {
-        this.idKnjiga = idKnjiga;
-        this.naslov = naslov;
-        this.autor = autor;
-        this.cenaZaNepovracaj = cenaZaNepovracaj;
+        setIdKnjiga(idKnjiga);
+        setNaslov(naslov);
+        setAutor(autor);
+        setCenaZaNepovracaj(cenaZaNepovracaj);
     }
 
     /**
@@ -81,8 +81,12 @@ public class Knjiga implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja naslov knjige.
      * @param naslov Naslov knjige.
+     * @throws java.lang.IllegalArgumentException Ako je naslov null ili prazan.
      */
     public void setNaslov(String naslov) {
+        if (naslov == null || naslov.trim().isEmpty()) {
+            throw new IllegalArgumentException("Naslov knjige ne sme biti null niti prazan.");
+        }
         this.naslov = naslov;
     }
 
@@ -97,8 +101,12 @@ public class Knjiga implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja autora knjige.
      * @param autor Autor knjige.
+     * @throws java.lang.IllegalArgumentException Ako je autor null ili prazan.
      */
     public void setAutor(String autor) {
+        if (autor == null || autor.trim().isEmpty()) {
+            throw new IllegalArgumentException("Autor knjige ne sme biti null niti prazan.");
+        }
         this.autor = autor;
     }
 
@@ -113,8 +121,12 @@ public class Knjiga implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja cenu za nepovraćaj knjige.
      * @param cenaZaNepovracaj Iznos kazne za nepovraćaj.
+     * @throws java.lang.IllegalArgumentException Ako je cena negativna.
      */
     public void setCenaZaNepovracaj(double cenaZaNepovracaj) {
+        if (cenaZaNepovracaj < 0) {
+            throw new IllegalArgumentException("Cena za nepovraćaj ne sme biti negativna.");
+        }
         this.cenaZaNepovracaj = cenaZaNepovracaj;
     }
 

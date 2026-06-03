@@ -79,15 +79,15 @@ public class StavkaZapisaOIznajmljivanju implements ApstraktniDomenskiObjekat {
      */
     public StavkaZapisaOIznajmljivanju(int idZapis, int rb, int kolicina, double iznos, Date datumVracanja, 
             Date maxDatumVracanja, boolean vracenoNaVreme, double cenaZaNepovracaj, Knjiga knjiga) {
-        this.rb = rb;
-        this.kolicina = kolicina;
-        this.iznos = iznos;
-        this.datumVracanja = datumVracanja;
-        this.maxDatumVracanja = maxDatumVracanja;
-        this.vracenoNaVreme = vracenoNaVreme;
-        this.cenaZaNepovracaj = cenaZaNepovracaj;
-        this.knjiga = knjiga;
-        this.idZapis = idZapis;
+        setZapis(idZapis);
+        setRb(rb);
+        setKolicina(kolicina);
+        setIznos(iznos);
+        setDatumVracanja(datumVracanja);
+        setMaxDatumVracanja(maxDatumVracanja);
+        setVracenoNaVreme(vracenoNaVreme);
+        setCenaZaNepovracaj(cenaZaNepovracaj);
+        setKnjiga(knjiga);
     }
 
     /**
@@ -101,8 +101,12 @@ public class StavkaZapisaOIznajmljivanju implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja identifikator matičnog zapisa o iznajmljivanju.
      * @param zapis ID zapisa.
+     * @throws java.lang.IllegalArgumentException Ukoliko je ID zapisa negativan ili nula.
      */
     public void setZapis(int zapis) {
+        if (zapis <= 0) {
+            throw new IllegalArgumentException("ID zapisa mora biti pozitivan broj.");
+        }
         this.idZapis = zapis;
     }
 
@@ -117,8 +121,11 @@ public class StavkaZapisaOIznajmljivanju implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja redni broj stavke.
      * @param rb Redni broj stavke.
+     * @throws java.lang.IllegalArgumentException Ukoliko je redni broj negativan ili nula.
      */
     public void setRb(int rb) {
+        if (rb <= 0) 
+            throw new IllegalArgumentException("Redni broj stavke mora biti pozitivan.");
         this.rb = rb;
     }
 
@@ -133,8 +140,12 @@ public class StavkaZapisaOIznajmljivanju implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja iznajmljenu količinu knjiga.
      * @param kolicina Broj primeraka knjige.
+     * @throws java.lang.IllegalArgumentException Ukoliko je količina negativna, nula ili veća od 10.
      */
     public void setKolicina(int kolicina) {
+        if (kolicina <= 0 || kolicina > 10) {
+            throw new IllegalArgumentException("Količina mora biti veća od nule ili manja od 11.");
+        }
         this.kolicina = kolicina;
     }
 
@@ -149,8 +160,12 @@ public class StavkaZapisaOIznajmljivanju implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja finansijski iznos stavke.
      * @param iznos Vrednost stavke.
+     * @throws java.lang.IllegalArgumentException Ukoliko je iznos negativan.
      */
     public void setIznos(double iznos) {
+        if (iznos < 0) {
+            throw new IllegalArgumentException("Iznos ne sme biti negativan.");
+        }
         this.iznos = iznos;
     }
 
@@ -181,8 +196,12 @@ public class StavkaZapisaOIznajmljivanju implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja maksimalni dozvoljeni rok za vraćanje knjige.
      * @param maxDatumVracanja Krajnji rok.
+     * @throws java.lang.IllegalArgumentException Ukoliko je maksimalni datum vraćanja null.
      */
     public void setMaxDatumVracanja(Date maxDatumVracanja) {
+        if (maxDatumVracanja == null) {
+            throw new IllegalArgumentException("Maksimalni datum vraćanja ne sme biti null.");
+        }
         this.maxDatumVracanja = maxDatumVracanja;
     }
 
@@ -213,8 +232,12 @@ public class StavkaZapisaOIznajmljivanju implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja cenu kazne za nepovraćaj knjige iz ove stavke.
      * @param cenaZaNepovracaj Iznos kazne.
+     * @throws java.lang.IllegalArgumentException Ukoliko je cena kazne negativna.
      */
     public void setCenaZaNepovracaj(double cenaZaNepovracaj) {
+        if (cenaZaNepovracaj < 0) {
+            throw new IllegalArgumentException("Cena za nepovraćaj ne sme biti negativna.");
+        }
         this.cenaZaNepovracaj = cenaZaNepovracaj;
     }
 
@@ -229,8 +252,12 @@ public class StavkaZapisaOIznajmljivanju implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja knjigu za ovu stavku zapisa.
      * @param knjiga Objekat knjige.
+     * @throws java.lang.IllegalArgumentException Ukoliko je knjiga null.
      */
     public void setKnjiga(Knjiga knjiga) {
+        if (knjiga == null) {
+            throw new IllegalArgumentException("Knjiga na stavci ne sme biti null.");
+        }
         this.knjiga = knjiga;
     }
 

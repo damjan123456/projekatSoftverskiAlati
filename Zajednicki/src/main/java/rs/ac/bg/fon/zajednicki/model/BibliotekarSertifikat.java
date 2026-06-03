@@ -42,9 +42,9 @@ public class BibliotekarSertifikat implements ApstraktniDomenskiObjekat {
      * @param datumIzdavanja Datum izdavanja sertifikata.
      */
     public BibliotekarSertifikat(Bibliotekar bibliotekar, Sertifikat sertifikat, Date datumIzdavanja) {
-        this.bibliotekar = bibliotekar;
-        this.sertifikat = sertifikat;
-        this.datumIzdavanja = datumIzdavanja;
+        setBibliotekar(bibliotekar);
+        setSertifikat(sertifikat);
+        setDatumIzdavanja(datumIzdavanja);
     }
 
     /**
@@ -58,8 +58,12 @@ public class BibliotekarSertifikat implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja objekat bibliotekara.
      * @param bibliotekar Objekat bibliotekara.
+     * @throws java.lang.IllegalArgumentException Ukoliko je prosleđeni bibliotekar null.
      */
     public void setBibliotekar(Bibliotekar bibliotekar) {
+        if (bibliotekar == null) {
+            throw new IllegalArgumentException("Bibliotekar ne sme biti null.");
+        }
         this.bibliotekar = bibliotekar;
     }
 
@@ -74,8 +78,12 @@ public class BibliotekarSertifikat implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja objekat sertifikata.
      * @param sertifikat Objekat sertifikata.
+     * @throws java.lang.IllegalArgumentException Ukoliko je prosleđeni sertifikat null.
      */
     public void setSertifikat(Sertifikat sertifikat) {
+        if (sertifikat == null) {
+            throw new IllegalArgumentException("Sertifikat ne sme biti null.");
+        }
         this.sertifikat = sertifikat;
     }
 
@@ -90,8 +98,12 @@ public class BibliotekarSertifikat implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja datum izdavanja sertifikata.
      * @param datumIzdavanja Datum izdavanja.
+     * @throws java.lang.IllegalArgumentException Ukoliko je prosleđeni datumIzdavanja null.
      */
     public void setDatumIzdavanja(Date datumIzdavanja) {
+        if (datumIzdavanja == null) {
+            throw new IllegalArgumentException("Datum izdavanja ne sme biti null.");
+        }
         this.datumIzdavanja = datumIzdavanja;
     }
 
