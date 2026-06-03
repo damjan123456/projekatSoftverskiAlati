@@ -72,8 +72,12 @@ public class Sertifikat implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja naziv sertifikata.
      * @param naziv Naziv sertifikata.
+     * @throws java.lang.IllegalArgumentException Ukoliko je naziv null ili prazan string.
      */
     public void setNaziv(String naziv) {
+        if (naziv == null || naziv.trim().isEmpty()) {
+            throw new IllegalArgumentException("Naziv sertifikata ne sme biti null niti prazan.");
+        }
         this.naziv = naziv;
     }
 
@@ -88,8 +92,12 @@ public class Sertifikat implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja naziv institucije koja izdaje sertifikat.
      * @param institucija Naziv izdavaoca sertifikata.
+     * @throws java.lang.IllegalArgumentException Ukoliko je naziv institucije null ili prazan string.
      */
     public void setInstitucija(String institucija) {
+        if (institucija == null || institucija.trim().isEmpty()) {
+            throw new IllegalArgumentException("Institucija sertifikata ne sme biti null niti prazan.");
+        }
         this.institucija = institucija;
     }
 

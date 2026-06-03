@@ -10,7 +10,7 @@ import java.util.Objects;
  * Sadrži informacije o zaposlenom u biblioteci, uključujući lične podatke
  * i kredencijale za pristup klijentskoj aplikaciji.
  * Implementira ApstraktniDomenskiObjekat interfejs.
- * * @author damja
+ * * @author Damjan
  */
 public class Bibliotekar implements ApstraktniDomenskiObjekat {
     
@@ -56,8 +56,8 @@ public class Bibliotekar implements ApstraktniDomenskiObjekat {
      * @param sifra Lozinka za prijavu.
      */
     public Bibliotekar(String korisnickoIme, String sifra) {
-        this.korisnickoIme = korisnickoIme;
-        this.sifra = sifra;
+        setKorisnickoIme(korisnickoIme);
+        setSifra(sifra);
     }
  
     /**
@@ -70,12 +70,12 @@ public class Bibliotekar implements ApstraktniDomenskiObjekat {
      * @param sifra Lozinka.
      */
     public Bibliotekar(int idBibliotekar, String ime, String prezime, String brojTel, String korisnickoIme, String sifra) {
-        this.idBibliotekar = idBibliotekar;
-        this.ime = ime;
-        this.prezime = prezime;
-        this.brojTel = brojTel;
-        this.korisnickoIme = korisnickoIme;
-        this.sifra = sifra;
+        setIdBibliotekar(idBibliotekar);
+        setIme(ime);
+        setPrezime(prezime);
+        setBrojTel(brojTel);
+        setKorisnickoIme(korisnickoIme);
+        setSifra(sifra);
     }
 
     /**
@@ -114,8 +114,16 @@ public class Bibliotekar implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja ime bibliotekara.
      * * @param ime Ime bibliotekara.
+     * @throws IllegalArgumentException Ako je ime null ili prazno.
+     * @throws IllegalArgumentException Ako ime ima 5 ili manje karaktera.
      */
     public void setIme(String ime) {
+        if (ime == null || ime.trim().isEmpty()) {
+            throw new IllegalArgumentException("Ime ne sme biti null ili prazno.");
+        }
+        if (ime.trim().length() <= 2){
+            throw new IllegalArgumentException("Ime mora imati više od 2 karaktera.");
+        }
         this.ime = ime;
     }
 
@@ -130,8 +138,16 @@ public class Bibliotekar implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja prezime bibliotekara.
      * @param prezime Prezime bibliotekara.
+     * @throws IllegalArgumentException Ako je prezime null ili prazno.
+     * @throws IllegalArgumentException Ako prezime ima 5 ili manje karaktera.
      */
     public void setPrezime(String prezime) {
+        if (prezime == null || prezime.trim().isEmpty()) {
+            throw new IllegalArgumentException("Ime ne sme biti null ili prazno.");
+        }
+        if (ime.trim().length() <= 2){
+            throw new IllegalArgumentException("Ime mora imati više od 2 karaktera.");
+        }
         this.prezime = prezime;
     }
 
@@ -146,8 +162,16 @@ public class Bibliotekar implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja kontakt telefon bibliotekara.
      * @param brojTel Broj telefona.
+     * @throws java.lang.IllegalArgumentException Ako je broj telefona null ili prazan.
+     * @throws java.lang.IllegalArgumentException Ako broj telefona nema 9 ili 10 cifara.
      */
     public void setBrojTel(String brojTel) {
+        if (brojTel == null || brojTel.trim().isEmpty()) {
+            throw new IllegalArgumentException("Broj telefona ne sme biti null ili prazan.");
+        }
+        if (brojTel.trim().length() < 9 || brojTel.trim().length() > 10) {
+            throw new IllegalArgumentException("Broj mora imati 9 ili 10 cifara.");
+        }
         this.brojTel = brojTel;
     }
 
@@ -162,8 +186,12 @@ public class Bibliotekar implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja korisničko ime bibliotekara.
      * @param korisnickoIme Korisničko ime za sistem.
+     * @throws java.lang.IllegalArgumentException Ako je korisničko ime null ili prazno.
      */
     public void setKorisnickoIme(String korisnickoIme) {
+        if (korisnickoIme == null || korisnickoIme.trim().isEmpty()) {
+            throw new IllegalArgumentException("Korisničko ime ne sme biti null niti prazno.");
+        }
         this.korisnickoIme = korisnickoIme;
     }
 
@@ -178,8 +206,21 @@ public class Bibliotekar implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja lozinku bibliotekara.
      *@param sifra Lozinka za pristup sistemu.
+    * @throws java.lang.IllegalArgumentException Ako je šifra null.
+        * @throws java.lang.IllegalArgumentException Ako šifra ima manje od 8 karaktera.
+        * @throws java.lang.IllegalArgumentException Ako šifra ne sadrži bar jedan broj.
      */
     public void setSifra(String sifra) {
+        if (sifra == null) {
+            throw new IllegalArgumentException("Šifra ne sme biti null.");
+        }
+        if (sifra.length() < 8) {
+            throw new IllegalArgumentException("Šifra must sadržati najmanje 8 karaktera.");
+        }
+        // Provera da li sadrži bar jedan broj pomoću regularnog izraza
+        if (!sifra.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("Šifra mora sadržati bar jedan broj.");
+        }
         this.sifra = sifra;
     }
 
