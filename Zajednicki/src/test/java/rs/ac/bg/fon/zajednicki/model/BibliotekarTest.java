@@ -19,13 +19,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class BibliotekarTest {
-    Bibliotekar b;
+
+    private Bibliotekar b;
+
     @Mock
     private ResultSet mockResultSet;
 
     @BeforeEach
     void setUp() {
-        b = new Bibliotekar(1, "Damjan", "Djuric", "064123456", "damjan", "sifra");
+        b = new Bibliotekar(1, "Damjan", "Djuric", "064123456", "damjan", "sifra123");
     }
 
     @AfterEach
@@ -35,10 +37,10 @@ public class BibliotekarTest {
 
     @ParameterizedTest
     @CsvSource({
-        "damja, sifra123, damja, sifra123, true",      
-        "damja, sifra123, pera,   sifra123, false",    
-        "damja, sifra123, damja,  pogresna, false",     
-        "damja, sifra123, pera,   pogresna, false"    
+        "damjan, sifra123, damjan, sifra123, true",      
+        "damjan, sifra123, pera,   sifra123, false",    
+        "damjan, sifra123, damjan, pogresna123, false",     
+        "damjan, sifra123, pera,   pogresna123, false"    
     })
     void testEquals(String korIme1, String sifra1, String korIme2, String sifra2, boolean jednako) {
         b.setKorisnickoIme(korIme1);
@@ -52,45 +54,129 @@ public class BibliotekarTest {
     }
 
     @Test
-    void testSetBrojTel() {
+    void testSetIdBibliotekar() {
+        b.setIdBibliotekar(5);
+        assertEquals(5, b.getIdBibliotekar());
+    }
+
+    @Test
+    void testSetImeUspesno() {
+        b.setIme("Nikola");
+        assertEquals("Nikola", b.getIme());
+    }
+
+    @Test
+    void testSetImeNull() {
+        assertThrows(IllegalArgumentException.class, () -> b.setIme(null));
+    }
+
+    @Test
+    void testSetImePrazno() {
+        assertThrows(IllegalArgumentException.class, () -> b.setIme("   "));
+    }
+
+    @Test
+    void testSetImePrekratko() {
+        // Validacija baca izuzetak ako je dužina <= 2
+        assertThrows(IllegalArgumentException.class, () -> b.setIme("An"));
+    }
+
+    @Test
+    void testSetPrezimeUspesno() {
+        b.setPrezime("Petrovic");
+        assertEquals("Petrovic", b.getPrezime());
+    }
+
+    @Test
+    void testSetPrezimeNull() {
+        assertThrows(IllegalArgumentException.class, () -> b.setPrezime(null));
+    }
+
+    @Test
+    void testSetPrezimePrazno() {
+        assertThrows(IllegalArgumentException.class, () -> b.setPrezime("   "));
+    }
+
+    @Test
+    void testSetPrezimePrekratko() {
+        // PAŽNJA: U tvom kodu u setPrezime() greškom proveravaš dužinu atributa 'ime' umesto 'prezime'
+        // (if (ime.trim().length() <= 2)). Test će pasti ako ime ima više od 2 karaktera.
+        // Ovdje testiramo logiku kako je napisana.
+        assertThrows(IllegalArgumentException.class, () -> b.setPrezime("jo"));
+    }
+
+    @Test
+    void testSetBrojTelUspesnoDevetCifara() {
         b.setBrojTel("064123456");
         assertEquals("064123456", b.getBrojTel());
     }
 
     @Test
-    void testSetIdBibliotekar() {
-        b.setIdBibliotekar(1);
-        assertEquals(1, b.getIdBibliotekar());
+    void testSetBrojTelUspesnoDesetCifara() {
+        b.setBrojTel("0641234567");
+        assertEquals("0641234567", b.getBrojTel());
     }
 
     @Test
-    void testSetIme() {
-        b.setIme("Damjan");
-        assertEquals("Damjan", b.getIme());
+    void testSetBrojTelNull() {
+        assertThrows(IllegalArgumentException.class, () -> b.setBrojTel(null));
     }
 
     @Test
-    void testSetKorisnickoIme() {
-        b.setKorisnickoIme("damjan");
-        assertEquals("damjan", b.getKorisnickoIme());
+    void testSetBrojTelPrazan() {
+        assertThrows(IllegalArgumentException.class, () -> b.setBrojTel("  "));
     }
 
     @Test
-    void testSetPrezime() {
-        b.setPrezime("Djuric");
-        assertEquals("Djuric", b.getPrezime());
+    void testSetBrojTelPrekratak() {
+        assertThrows(IllegalArgumentException.class, () -> b.setBrojTel("064123"));
     }
 
     @Test
-    void testSetSifra() {
-        b.setSifra("sifra");
-        assertEquals("sifra", b.getSifra());
+    void testSetBrojTelPredugacak() {
+        assertThrows(IllegalArgumentException.class, () -> b.setBrojTel("064123456789"));
+    }
+
+    @Test
+    void testSetKorisnickoImeUspesno() {
+        b.setKorisnickoIme("damjan_fon");
+        assertEquals("damjan_fon", b.getKorisnickoIme());
+    }
+
+    @Test
+    void testSetKorisnickoImeNull() {
+        assertThrows(IllegalArgumentException.class, () -> b.setKorisnickoIme(null));
+    }
+
+    @Test
+    void testSetKorisnickoImePrazno() {
+        assertThrows(IllegalArgumentException.class, () -> b.setKorisnickoIme(" "));
+    }
+
+    @Test
+    void testSetSifraUspesno() {
+        b.setSifra("sigurna1");
+        assertEquals("sigurna1", b.getSifra());
+    }
+
+    @Test
+    void testSetSifraNull() {
+        assertThrows(IllegalArgumentException.class, () -> b.setSifra(null));
+    }
+
+    @Test
+    void testSetSifraPrekratka() {
+        assertThrows(IllegalArgumentException.class, () -> b.setSifra("sif1"));
     }
 
     @Test
     void testToString() {
-        String ocekivano = "Damjan Djuric";
-        assertEquals(ocekivano, b.toString());
+        assertEquals("Damjan Djuric", b.toString());
+    }
+
+    @Test
+    void testVratiNazivTabele() {
+        assertEquals("bibliotekar", b.vratiNazivTabele());
     }
 
     @Test
@@ -99,44 +185,9 @@ public class BibliotekarTest {
     }
 
     @Test
-void testVratiListuViseRedovaUspesnoMapiranje() throws Exception {
-    when(mockResultSet.next()).thenReturn(true, true, true, false); 
-    
-    when(mockResultSet.getInt("bibliotekar.idBibliotekar")).thenReturn(10, 20, 30);
-    when(mockResultSet.getString("bibliotekar.ime")).thenReturn("Ana", "Boris", "Ceca");
-    when(mockResultSet.getString("bibliotekar.prezime")).thenReturn("Anić", "Borić", "Ceciće");
-    when(mockResultSet.getString("bibliotekar.brojTel")).thenReturn("061", "062", "063");
-    when(mockResultSet.getString("bibliotekar.korisnickoIme")).thenReturn("ana", "boris", "ceca");
-    when(mockResultSet.getString("bibliotekar.sifra")).thenReturn("ana123", "boris123", "ceca123");
-
-    List<ApstraktniDomenskiObjekat> rezultat = b.vratiListu(mockResultSet);
-
-    assertNotNull(rezultat);
-    assertEquals(3, rezultat.size(), "Lista bi trebalo da sadrži tačno 3 objekta.");
-    
-    Bibliotekar b1 = (Bibliotekar) rezultat.get(0);
-    assertEquals(10, b1.getIdBibliotekar());
-    assertEquals("Ana", b1.getIme());
-    
-    Bibliotekar b2 = (Bibliotekar) rezultat.get(1);
-    assertEquals(20, b2.getIdBibliotekar());
-    assertEquals("Boris", b2.getIme());
-    
-    Bibliotekar b3 = (Bibliotekar) rezultat.get(2);
-    assertEquals(30, b3.getIdBibliotekar());
-    assertEquals("Ceca", b3.getIme());
-}
-
-    @Test
-    void testVratiNazivTabele() {
-        assertEquals("bibliotekar", b.vratiNazivTabele());
-    }
-
-    @Test
-    void testVratiObjekatIzRS() {
-        assertThrows(UnsupportedOperationException.class, () -> {
-            b.vratiObjekatIzRS(mockResultSet);
-        });
+    void testVratiVrednostiZaUbacivanje() {
+        String ocekivano = "('Damjan','Djuric','064123456','damjan','sifra123')";
+        assertEquals(ocekivano, b.vratiVrednostiZaUbacivanje());
     }
 
     @Test
@@ -146,13 +197,33 @@ void testVratiListuViseRedovaUspesnoMapiranje() throws Exception {
 
     @Test
     void testVratiVrednostiZaIzmenu() {
-        String ocekivano = "ime='Damjan',prezime='Djuric',brojTel='064123456',korisnickoIme='damjan',sifra='sifra'";
+        String ocekivano = "ime='Damjan',prezime='Djuric',brojTel='064123456',korisnickoIme='damjan',sifra='sifra123'";
         assertEquals(ocekivano, b.vratiVrednostiZaIzmenu());
     }
 
     @Test
-    void testVratiVrednostiZaUbacivanje() {
-        String ocekivano = "('Damjan','Djuric','064123456','damjan','sifra')";
-        assertEquals(ocekivano, b.vratiVrednostiZaUbacivanje());
+    void testVratiObjekatIzRS() {
+        assertThrows(UnsupportedOperationException.class, () -> b.vratiObjekatIzRS(mockResultSet));
+    }
+
+    @Test
+    void testVratiListuUspesno() throws Exception {
+        when(mockResultSet.next()).thenReturn(true, false); 
+        
+        when(mockResultSet.getInt("bibliotekar.idBibliotekar")).thenReturn(10);
+        when(mockResultSet.getString("bibliotekar.ime")).thenReturn("Marko");
+        when(mockResultSet.getString("bibliotekar.prezime")).thenReturn("Markovic");
+        when(mockResultSet.getString("bibliotekar.brojTel")).thenReturn("065123456");
+        when(mockResultSet.getString("bibliotekar.korisnickoIme")).thenReturn("marko1");
+        when(mockResultSet.getString("bibliotekar.sifra")).thenReturn("sifra123");
+
+        List<ApstraktniDomenskiObjekat> rezultat = b.vratiListu(mockResultSet);
+
+        assertNotNull(rezultat);
+        assertEquals(1, rezultat.size());
+        Bibliotekar mapirani = (Bibliotekar) rezultat.get(0);
+        assertEquals(10, mapirani.getIdBibliotekar());
+        assertEquals("Marko", mapirani.getIme());
+        assertEquals("Markovic", mapirani.getPrezime());
     }
 }

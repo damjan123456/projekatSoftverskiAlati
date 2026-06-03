@@ -145,7 +145,7 @@ public class Bibliotekar implements ApstraktniDomenskiObjekat {
         if (prezime == null || prezime.trim().isEmpty()) {
             throw new IllegalArgumentException("Ime ne sme biti null ili prazno.");
         }
-        if (ime.trim().length() <= 2){
+        if (prezime.trim().length() <= 2){
             throw new IllegalArgumentException("Ime mora imati više od 2 karaktera.");
         }
         this.prezime = prezime;
@@ -207,19 +207,14 @@ public class Bibliotekar implements ApstraktniDomenskiObjekat {
      * Postavlja lozinku bibliotekara.
      *@param sifra Lozinka za pristup sistemu.
     * @throws java.lang.IllegalArgumentException Ako je šifra null.
-        * @throws java.lang.IllegalArgumentException Ako šifra ima manje od 8 karaktera.
-        * @throws java.lang.IllegalArgumentException Ako šifra ne sadrži bar jedan broj.
+        * @throws java.lang.IllegalArgumentException Ako šifra ima manje od 5 karaktera.
      */
     public void setSifra(String sifra) {
         if (sifra == null) {
-            throw new IllegalArgumentException("Šifra ne sme biti null.");
+            throw new IllegalArgumentException("Sifra ne sme biti null.");
         }
-        if (sifra.length() < 8) {
-            throw new IllegalArgumentException("Šifra must sadržati najmanje 8 karaktera.");
-        }
-        // Provera da li sadrži bar jedan broj pomoću regularnog izraza
-        if (!sifra.matches(".*\\d.*")) {
-            throw new IllegalArgumentException("Šifra mora sadržati bar jedan broj.");
+        if (sifra.length() < 5) {
+            throw new IllegalArgumentException("Sifra mora da sadrzati najmanje 5 karaktera.");
         }
         this.sifra = sifra;
     }

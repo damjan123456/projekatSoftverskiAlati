@@ -57,23 +57,23 @@ class UbaciSertifikatTest {
 
     @Test
     void testUbaciSertifikatPraznaInstitucijaBacaIzuzetak() throws Exception {
-        ispravanSertifikat.setInstitucija("");
+        // Seter sada direktno baca IllegalArgumentException
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            ispravanSertifikat.setInstitucija("");
+        });
 
-        Exception ex = assertThrows(Exception.class, () -> operacija.izvrsi(ispravanSertifikat));
-        assertEquals("GRESKA INSTITUCIJA", ex.getMessage());
-
-        verify(mockBroker).rollback();
+        verify(mockBroker, never()).rollback();
         verify(mockBroker, never()).connect();
     }
 
     @Test
     void testUbaciSertifikatNazivNullBacaIzuzetak() throws Exception {
-        ispravanSertifikat.setNaziv(null);
+        // Seter sada direktno baca IllegalArgumentException
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            ispravanSertifikat.setNaziv(null);
+        });
 
-        Exception ex = assertThrows(Exception.class, () -> operacija.izvrsi(ispravanSertifikat));
-        assertEquals("GRESKA NAZIV", ex.getMessage());
-
-        verify(mockBroker).rollback();
+        verify(mockBroker, never()).rollback();
         verify(mockBroker, never()).connect();
     }
 

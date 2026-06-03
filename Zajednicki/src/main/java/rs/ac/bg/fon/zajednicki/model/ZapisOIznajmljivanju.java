@@ -172,11 +172,11 @@ public class ZapisOIznajmljivanju implements ApstraktniDomenskiObjekat {
     /**
      * Postavlja listu stavki za ovaj zapis o iznajmljivanju.
      * @param stavke Lista stavki.
-     * @throws java.lang.IllegalArgumentException Ako je lista stavki null ili prazna, baca se izuzetak.
+     * @throws java.lang.IllegalArgumentException Ako je lista stavki null baca se izuzetak.
      */
     public void setStavke(List<StavkaZapisaOIznajmljivanju> stavke) {
-        if (stavke == null || stavke.size() == 0) {
-            throw new IllegalArgumentException("Lista stavki ne sme biti null ili prazna.");
+        if (stavke == null) {
+            throw new IllegalArgumentException("Lista stavki ne sme biti null.");
         }
         this.stavke = stavke;
     }

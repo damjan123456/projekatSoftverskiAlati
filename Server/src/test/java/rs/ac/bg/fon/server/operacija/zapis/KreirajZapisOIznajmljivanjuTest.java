@@ -30,7 +30,6 @@ class KreirajZapisOIznajmljivanjuTest {
     @BeforeEach
     void setUp() {
         operacija = new KreirajZapisOIznajmljivanju();
-        operacija = new KreirajZapisOIznajmljivanju();
     }
     
     private void inicijalizujOperaciju() {
@@ -85,47 +84,53 @@ class KreirajZapisOIznajmljivanjuTest {
     @Test
     void testKreirajZapisDatumNullBacaIzuzetak() throws Exception {
         inicijalizujOperaciju();
-        ispravanZapis.setDatumIznajmljivanja(null);
-
-        Exception ex = assertThrows(Exception.class, () -> operacija.izvrsi(ispravanZapis));
-        assertEquals("GRESKA DATUM", ex.getMessage());
         
-        verify(mockBroker).rollback();
+        // Seter sada direktno baca IllegalArgumentException
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            ispravanZapis.setDatumIznajmljivanja(null);
+        });
+        
+        verify(mockBroker, never()).rollback();
         verify(mockBroker, never()).connect();
     }
 
     @Test
     void testKreirajZapisNegativanIznosBacaIzuzetak() throws Exception {
         inicijalizujOperaciju();
-        ispravanZapis.setUkupanIznos(-50.0);
-
-        Exception ex = assertThrows(Exception.class, () -> operacija.izvrsi(ispravanZapis));
-        assertEquals("GRESKA UKUPAN IZNOS", ex.getMessage());
         
-        verify(mockBroker).rollback();
+        // Seter sada direktno baca IllegalArgumentException
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            ispravanZapis.setUkupanIznos(-50.0);
+        });
+        
+        verify(mockBroker, never()).rollback();
         verify(mockBroker, never()).connect();
     }
 
     @Test
     void testKreirajZapisBibliotekarNullBacaIzuzetak() throws Exception {
         inicijalizujOperaciju();
-        ispravanZapis.setBibliotekar(null);
-
-        Exception ex = assertThrows(Exception.class, () -> operacija.izvrsi(ispravanZapis));
-        assertEquals("GRESKA BIBLIOTEKAR", ex.getMessage());
         
-        verify(mockBroker).rollback();
+        // Seter sada direktno baca IllegalArgumentException
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            ispravanZapis.setBibliotekar(null);
+        });
+        
+        verify(mockBroker, never()).rollback();
+        verify(mockBroker, never()).connect();
     }
 
     @Test
     void testKreirajZapisCitalacNullBacaIzuzetak() throws Exception {
         inicijalizujOperaciju();
-        ispravanZapis.setCitalac(null);
-
-        Exception ex = assertThrows(Exception.class, () -> operacija.izvrsi(ispravanZapis));
-        assertEquals("GRESKA CITALAC", ex.getMessage());
         
-        verify(mockBroker).rollback();
+        // Seter sada direktno baca IllegalArgumentException
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            ispravanZapis.setCitalac(null);
+        });
+        
+        verify(mockBroker, never()).rollback();
+        verify(mockBroker, never()).connect();
     }
 
     @Test
@@ -133,7 +138,7 @@ class KreirajZapisOIznajmljivanjuTest {
         inicijalizujOperaciju();
         
         when(mockBroker.addReturnKey(ispravanZapis)).thenReturn(100);
-        doNothing().doThrow(new Exception("Greška upisa stavke u DB")).when(mockBroker).add(any(StavkaZapisaOIznajmljivanju.class));
+        doThrow(new Exception("Greška upisa stavke u DB")).when(mockBroker).add(any(StavkaZapisaOIznajmljivanju.class));
 
         Exception ex = assertThrows(Exception.class, () -> operacija.izvrsi(ispravanZapis));
         assertEquals("Greška upisa stavke u DB", ex.getMessage());

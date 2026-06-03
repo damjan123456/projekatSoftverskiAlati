@@ -1,8 +1,11 @@
 package rs.ac.bg.fon.zajednicki.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.sql.ResultSet;
@@ -14,6 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -35,6 +40,16 @@ public class KnjigaTest {
         k = null;
     }
 
+    @Test
+    void testPodrazumevaniKonstruktor() {
+        Knjiga prazan = new Knjiga();
+        assertNotNull(prazan);
+        assertEquals(0, prazan.getIdKnjiga());
+        assertNull(prazan.getNaslov());
+        assertNull(prazan.getAutor());
+        assertEquals(0.0, prazan.getCenaZaNepovracaj());
+    }
+
     @ParameterizedTest
     @CsvSource({
         "Na Drini cuprija, Ivo Andric, Na Drini cuprija, Ivo Andric, true",   
@@ -51,6 +66,46 @@ public class KnjigaTest {
         k2.setAutor(autor2);
 
         assertEquals(jednako, k.equals(k2));
+    }
+
+    @Test
+    void testEqualsIstiObjekat() {
+        assertTrue(k.equals(k));
+    }
+
+    @Test
+    void testEqualsNull() {
+        assertFalse(k.equals(null));
+    }
+
+    @Test
+    void testEqualsRazlicitaKlasa() {
+        assertFalse(k.equals(((Object)new String("Na Drini cuprija Ivo Andric"))));
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {"   ", "\n", "\t"})
+    void testSetNaslovIzuzetak(String neispravanNaslov) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            k.setNaslov(neispravanNaslov);
+        });
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {"   ", "\n", "\t"})
+    void testSetAutorIzuzetak(String neispravanAutor) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            k.setAutor(neispravanAutor);
+        });
+    }
+
+    @Test
+    void testSetCenaZaNepovracajNegativnaIzuzetak() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            k.setCenaZaNepovracaj(-100.0);
+        });
     }
 
     @Test

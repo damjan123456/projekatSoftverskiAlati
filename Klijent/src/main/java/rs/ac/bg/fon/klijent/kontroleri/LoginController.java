@@ -52,7 +52,8 @@ public class LoginController {
                 try{
                     ulogovani = Komunikacija.getInstanca().login(korisnickoIme, sifra);
                 }catch(Exception exc){
-                    JOptionPane.showMessageDialog(lf, "Ne moze da se otvori glavna forma i meni", "GRESKA", JOptionPane.ERROR_MESSAGE);
+                    exc.printStackTrace();
+                    JOptionPane.showMessageDialog(lf, exc.getMessage(), "GRESKA", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 if (ulogovani == null){

@@ -110,7 +110,7 @@ public class Citalac implements ApstraktniDomenskiObjekat {
      * Postavlja prezime čitaoca.
      * @param prezime Prezime čitaoca.
      * @throws java.lang.IllegalArgumentException Ukoliko je prosleđeno prezime null ili prazno.
-     * @throws java.lang.IllegalArgumentException Ukoliko je prosleđeno prezime kraće od 5 karaktera.
+     * @throws java.lang.IllegalArgumentException Ukoliko je prosleđeno prezime kraće od 2 karaktera.
      */
     public void setPrezime(String prezime) {
         if (prezime == null || prezime.trim().isEmpty()) {

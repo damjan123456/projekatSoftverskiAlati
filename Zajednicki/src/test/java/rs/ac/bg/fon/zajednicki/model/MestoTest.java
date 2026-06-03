@@ -1,8 +1,11 @@
 package rs.ac.bg.fon.zajednicki.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.sql.ResultSet;
@@ -14,6 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -35,6 +40,14 @@ public class MestoTest {
         m = null;
     }
 
+    @Test
+    void testPodrazumevaniKonstruktor() {
+        Mesto prazan = new Mesto();
+        assertNotNull(prazan);
+        assertEquals(0, prazan.getIdMesto());
+        assertNull(prazan.getNaziv());
+    }
+
     @ParameterizedTest
     @CsvSource({
         "Beograd, Beograd, true",   
@@ -47,6 +60,30 @@ public class MestoTest {
         m2.setNaziv(naziv2);
 
         assertEquals(jednako, m.equals(m2));
+    }
+
+    @Test
+    void testEqualsIstiObjekat() {
+        assertTrue(m.equals(m));
+    }
+
+    @Test
+    void testEqualsNull() {
+        assertFalse(m.equals(null));
+    }
+
+    @Test
+    void testEqualsRazlicitaKlasa() {
+        assertFalse(m.equals((Object)new String("Beograd")));
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {"   ", "\n", "\t"})
+    void testSetNazivIzuzetak(String neispravanNaziv) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            m.setNaziv(neispravanNaziv);
+        });
     }
 
     @Test

@@ -1,8 +1,11 @@
 package rs.ac.bg.fon.zajednicki.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.sql.ResultSet;
@@ -14,6 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -36,6 +41,15 @@ public class SertifikatTest {
         s = null;
     }
 
+    @Test
+    void testPodrazumevaniKonstruktor() {
+        Sertifikat prazan = new Sertifikat();
+        assertNotNull(prazan);
+        assertEquals(0, prazan.getIdSertifikat());
+        assertNull(prazan.getNaziv());
+        assertNull(prazan.getInstitucija());
+    }
+
     @ParameterizedTest
     @CsvSource({
         "Spring Boot, Spring Boot, true",   
@@ -48,6 +62,39 @@ public class SertifikatTest {
         s2.setNaziv(naziv2);
 
         assertEquals(jednako, s.equals(s2));
+    }
+
+    @Test
+    void testEqualsIstiObjekat() {
+        assertTrue(s.equals(s));
+    }
+
+    @Test
+    void testEqualsNull() {
+        assertFalse(s.equals(null));
+    }
+
+    @Test
+    void testEqualsRazlicitaKlasa() {
+        assertFalse(s.equals((Object)new String("Spring Boot")));
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {"   ", "\n", "\t"})
+    void testSetNazivIzuzetak(String neispravanNaziv) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            s.setNaziv(neispravanNaziv);
+        });
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {"   ", "\n", "\t"})
+    void testSetInstitucijaIzuzetak(String neispravnaInstitucija) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            s.setInstitucija(neispravnaInstitucija);
+        });
     }
 
     @Test

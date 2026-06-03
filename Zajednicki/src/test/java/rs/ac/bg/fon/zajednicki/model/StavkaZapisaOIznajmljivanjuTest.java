@@ -1,8 +1,10 @@
 package rs.ac.bg.fon.zajednicki.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.sql.ResultSet;
@@ -22,105 +24,150 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class StavkaZapisaOIznajmljivanjuTest {
 
     private StavkaZapisaOIznajmljivanju stavka;
-    private Knjiga knjiga;
-    private Date fiksniDatum;
+    private Knjiga k;
+    private Date datumVracanja;
+    private Date maxDatumVracanja;
 
     @Mock
     private ResultSet mockResultSet;
 
     @BeforeEach
     void setUp() {
-        knjiga = new Knjiga(10, "Znakovi pored puta", "Ivo Andric", 2000.0);
-        fiksniDatum = new Date();
+        datumVracanja = new Date();
+        maxDatumVracanja = new Date(datumVracanja.getTime() + 864000000); // +10 dana
         
-        stavka = new StavkaZapisaOIznajmljivanju(1, 1, 2, 400.0, fiksniDatum, fiksniDatum, true, 2000.0, knjiga);
+        k = new Knjiga();
+        k.setIdKnjiga(50);
+        k.setNaslov("Na Drini cuprija");
+        
+        stavka = new StavkaZapisaOIznajmljivanju(100, 1, 2, 300.0, datumVracanja, maxDatumVracanja, true, 1000.0, k);
     }
 
     @AfterEach
     void tearDown() {
         stavka = null;
-        knjiga = null;
-        fiksniDatum = null;
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-        "1, 1, 1, 1, true",   
-        "1, 1, 1, 2, false",  
-        "1, 1, 2, 1, false",  
-        "1, 1, 5, 5, false"   
-    })
-    void testEquals(int idZapis1, int rb1, int idZapis2, int rb2, boolean jednako) {
-        stavka.setZapis(idZapis1);
-        stavka.setRb(rb1);
-
-        StavkaZapisaOIznajmljivanju druga = new StavkaZapisaOIznajmljivanju();
-        druga.setZapis(idZapis2);
-        druga.setRb(rb2);
-
-        assertEquals(jednako, stavka.equals(druga));
+        k = null;
     }
 
     @Test
-    void testSetZapis() {
-        stavka.setZapis(100);
-        assertEquals(100, stavka.getZapis());
+    void testSetZapisUspesno() {
+        stavka.setZapis(150);
+        assertEquals(150, stavka.getZapis());
     }
 
     @Test
-    void testSetRb() {
+    void testSetZapisNula() {
+        assertThrows(IllegalArgumentException.class, () -> stavka.setZapis(0));
+    }
+
+    @Test
+    void testSetZapisNegativan() {
+        assertThrows(IllegalArgumentException.class, () -> stavka.setZapis(-5));
+    }
+
+    @Test
+    void testSetRbUspesno() {
         stavka.setRb(5);
         assertEquals(5, stavka.getRb());
     }
 
     @Test
-    void testSetKolicina() {
-        stavka.setKolicina(3);
-        assertEquals(3, stavka.getKolicina());
+    void testSetRbNula() {
+        assertThrows(IllegalArgumentException.class, () -> stavka.setRb(0));
     }
 
     @Test
-    void testSetIznos() {
-        stavka.setIznos(750.50);
-        assertEquals(750.50, stavka.getIznos());
+    void testSetRbNegativan() {
+        assertThrows(IllegalArgumentException.class, () -> stavka.setRb(-1));
+    }
+
+    @Test
+    void testSetKolicinaUspesnoDonjaGranica() {
+        stavka.setKolicina(1);
+        assertEquals(1, stavka.getKolicina());
+    }
+
+    @Test
+    void testSetKolicinaUspesnoGornjaGranica() {
+        stavka.setKolicina(10);
+        assertEquals(10, stavka.getKolicina());
+    }
+
+    @Test
+    void testSetKolicinaNula() {
+        assertThrows(IllegalArgumentException.class, () -> stavka.setKolicina(0));
+    }
+
+    @Test
+    void testSetKolicinaPrekoDeset() {
+        assertThrows(IllegalArgumentException.class, () -> stavka.setKolicina(11));
+    }
+
+    @Test
+    void testSetIznosUspesno() {
+        stavka.setIznos(550.25);
+        assertEquals(550.25, stavka.getIznos());
+    }
+
+    @Test
+    void testSetIznosNegativan() {
+        assertThrows(IllegalArgumentException.class, () -> stavka.setIznos(-1.0));
     }
 
     @Test
     void testSetDatumVracanja() {
-        Date noviDatum = new Date(fiksniDatum.getTime() + 100000);
+        Date noviDatum = new Date();
         stavka.setDatumVracanja(noviDatum);
         assertEquals(noviDatum, stavka.getDatumVracanja());
     }
 
     @Test
-    void testSetMaxDatumVracanja() {
-        Date noviMaxDatum = new Date(fiksniDatum.getTime() + 500000);
-        stavka.setMaxDatumVracanja(noviMaxDatum);
-        assertEquals(noviMaxDatum, stavka.getMaxDatumVracanja());
+    void testSetMaxDatumVracanjaUspesno() {
+        Date noviMax = new Date();
+        stavka.setMaxDatumVracanja(noviMax);
+        assertEquals(noviMax, stavka.getMaxDatumVracanja());
+    }
+
+    @Test
+    void testSetMaxDatumVracanjaNull() {
+        assertThrows(IllegalArgumentException.class, () -> stavka.setMaxDatumVracanja(null));
     }
 
     @Test
     void testSetVracenoNaVreme() {
         stavka.setVracenoNaVreme(false);
-        assertEquals(false, stavka.isVracenoNaVreme());
+        assertFalse(stavka.isVracenoNaVreme());
+        stavka.setVracenoNaVreme(true);
+        assertTrue(stavka.isVracenoNaVreme());
     }
 
     @Test
-    void testSetCenaZaNepovracaj() {
-        stavka.setCenaZaNepovracaj(3500.0);
-        assertEquals(3500.0, stavka.getCenaZaNepovracaj());
+    void testSetCenaZaNepovracajUspesno() {
+        stavka.setCenaZaNepovracaj(1200.0);
+        assertEquals(1200.0, stavka.getCenaZaNepovracaj());
     }
 
     @Test
-    void testSetKnjiga() {
-        Knjiga novaKnjiga = new Knjiga(20, "Prokleta avlija", "Ivo Andric", 1500.0);
-        stavka.setKnjiga(novaKnjiga);
-        assertEquals(novaKnjiga, stavka.getKnjiga());
+    void testSetCenaZaNepovracajNegativna() {
+        assertThrows(IllegalArgumentException.class, () -> stavka.setCenaZaNepovracaj(-100));
+    }
+
+    @Test
+    void testSetKnjigaUspesno() {
+        Knjiga novaK = new Knjiga();
+        novaK.setIdKnjiga(99);
+        stavka.setKnjiga(novaK);
+        assertEquals(novaK, stavka.getKnjiga());
+    }
+
+    @Test
+    void testSetKnjigaNull() {
+        assertThrows(IllegalArgumentException.class, () -> stavka.setKnjiga(null));
     }
 
     @Test
     void testToString() {
-        assertEquals(knjiga.toString(), stavka.toString());
+        assertEquals(k.toString(), stavka.toString());
     }
 
     @Test
@@ -130,82 +177,82 @@ public class StavkaZapisaOIznajmljivanjuTest {
 
     @Test
     void testVratiKoloneZaUbacivanje() {
-        String ocekivano = "rb,idZapis,datumVracanja,maxDatumVracanja,kolicina,iznos,cenaZaNepovracaj,vracenoNaVreme,idKnjiga";
-        assertEquals(ocekivano, stavka.vratiKoloneZaUbacivanje());
+        assertEquals("rb,idZapis,datumVracanja,maxDatumVracanja,kolicina,iznos,cenaZaNepovracaj,vracenoNaVreme,idKnjiga", stavka.vratiKoloneZaUbacivanje());
     }
 
     @Test
     void testVratiVrednostiZaUbacivanje() {
-        java.sql.Date sql1 = new java.sql.Date(fiksniDatum.getTime());
-        java.sql.Date sql2 = new java.sql.Date(fiksniDatum.getTime());
-        String ocekivano = "(1,1,'" + sql1 + "','" + sql2 + "',2,400.0,2000.0,true,10)";
+        java.sql.Date sqlDatum1 = new java.sql.Date(datumVracanja.getTime());
+        java.sql.Date sqlDatum2 = new java.sql.Date(maxDatumVracanja.getTime());
+        String ocekivano = "(1,100,'" + sqlDatum1 + "','" + sqlDatum2 + "',2,300.0,1000.0,true,50)";
         assertEquals(ocekivano, stavka.vratiVrednostiZaUbacivanje());
     }
 
     @Test
     void testVratiPrimarniKljuc() {
-        assertEquals("rb=1 AND idZapis=1", stavka.vratiPrimarniKljuc());
+        assertEquals("rb=1 AND idZapis=100", stavka.vratiPrimarniKljuc());
     }
 
     @Test
     void testVratiVrednostiZaIzmenu() {
-        java.sql.Date sql1 = new java.sql.Date(fiksniDatum.getTime());
-        java.sql.Date sql2 = new java.sql.Date(fiksniDatum.getTime());
-        String ocekivano = "rb=1,idZapis=1,datumVracanja='" + sql1 + "',maxDatumVracanja='" + sql2 + "',kolicina=2,iznos=400.0,cenaZaNepovracaj=2000.0,vracenoNaVreme=true";
+        java.sql.Date sqlDatum1 = new java.sql.Date(datumVracanja.getTime());
+        java.sql.Date sqlDatum2 = new java.sql.Date(maxDatumVracanja.getTime());
+        String ocekivano = "rb=1,idZapis=100,datumVracanja='" + sqlDatum1 + "',maxDatumVracanja='" + sqlDatum2 + "',kolicina=2,iznos=300.0,cenaZaNepovracaj=1000.0,vracenoNaVreme=true";
         assertEquals(ocekivano, stavka.vratiVrednostiZaIzmenu());
     }
 
     @Test
     void testVratiObjekatIzRS() {
-        assertThrows(UnsupportedOperationException.class, () -> {
-            stavka.vratiObjekatIzRS(mockResultSet);
-        });
+        assertThrows(UnsupportedOperationException.class, () -> stavka.vratiObjekatIzRS(mockResultSet));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "1, 100, 1, 100, true",
+        "1, 100, 2, 100, false",
+        "1, 100, 1, 150, false",
+        "1, 100, 2, 150, false"
+    })
+    void testEquals(int rb1, int idZapis1, int rb2, int idZapis2, boolean jednako) {
+        StavkaZapisaOIznajmljivanju s1 = new StavkaZapisaOIznajmljivanju();
+        s1.setRb(rb1);
+        s1.setZapis(idZapis1);
+
+        StavkaZapisaOIznajmljivanju s2 = new StavkaZapisaOIznajmljivanju();
+        s2.setRb(rb2);
+        s2.setZapis(idZapis2);
+
+        assertEquals(jednako, s1.equals(s2));
     }
 
     @Test
-    void testVratiListuDvaRedaUspesnoMapiranje() throws Exception {
-        java.sql.Date sqlSad = new java.sql.Date(fiksniDatum.getTime());
-        
-        when(mockResultSet.next()).thenReturn(true, true, false);
-        
-        when(mockResultSet.getInt("stavkazapisaoiznajmljivanju.idZapis")).thenReturn(5, 5);
-        when(mockResultSet.getInt("stavkazapisaoiznajmljivanju.rb")).thenReturn(1, 2);
-        when(mockResultSet.getDate("stavkazapisaoiznajmljivanju.datumVracanja")).thenReturn(sqlSad, sqlSad);
-        when(mockResultSet.getDate("stavkazapisaoiznajmljivanju.maxDatumVracanja")).thenReturn(sqlSad, sqlSad);
-        when(mockResultSet.getInt("stavkazapisaoiznajmljivanju.kolicina")).thenReturn(1, 2); 
-        when(mockResultSet.getInt("stavkazapisaoiznajmljivanju.kolicina")).thenReturn(1, 2);
-        when(mockResultSet.getDouble("stavkazapisaoiznajmljivanju.iznos")).thenReturn(200.0, 450.0);
-        when(mockResultSet.getDouble("stavkazapisaoiznajmljivanju.cenaZaNepovracaj")).thenReturn(1800.0, 2200.0);
-        when(mockResultSet.getBoolean("stavkazapisaoiznajmljivanju.vracenoNaVreme")).thenReturn(true, false);
-        
-        when(mockResultSet.getInt("knjiga.idKnjiga")).thenReturn(30, 40);
-        when(mockResultSet.getString("knjiga.naslov")).thenReturn("Koreni", "Na Drini cuprija");
-        when(mockResultSet.getString("knjiga.autor")).thenReturn("Dobrica Cosic", "Ivo Andric");
-        when(mockResultSet.getDouble("knjiga.cenaZaNepovracaj")).thenReturn(1800.0, 2200.0);
+    void testVratiListuUspesno() throws Exception {
+        java.sql.Date sqlDatum1 = new java.sql.Date(datumVracanja.getTime());
+        java.sql.Date sqlDatum2 = new java.sql.Date(maxDatumVracanja.getTime());
+
+        when(mockResultSet.next()).thenReturn(true, false);
+        when(mockResultSet.getInt("stavkazapisaoiznajmljivanju.idZapis")).thenReturn(100);
+        when(mockResultSet.getInt("stavkazapisaoiznajmljivanju.rb")).thenReturn(1);
+        when(mockResultSet.getDate("stavkazapisaoiznajmljivanju.datumVracanja")).thenReturn(sqlDatum1);
+        when(mockResultSet.getDate("stavkazapisaoiznajmljivanju.maxDatumVracanja")).thenReturn(sqlDatum2);
+        when(mockResultSet.getInt("stavkazapisaoiznajmljivanju.kolicina")).thenReturn(2);
+        when(mockResultSet.getDouble("stavkazapisaoiznajmljivanju.iznos")).thenReturn(300.0);
+        when(mockResultSet.getDouble("stavkazapisaoiznajmljivanju.cenaZaNepovracaj")).thenReturn(1000.0);
+        when(mockResultSet.getBoolean("stavkazapisaoiznajmljivanju.vracenoNaVreme")).thenReturn(true);
+
+        when(mockResultSet.getInt("knjiga.idKnjiga")).thenReturn(50);
+        when(mockResultSet.getString("knjiga.naslov")).thenReturn("Na Drini cuprija");
+        when(mockResultSet.getString("knjiga.autor")).thenReturn("Ivo Andric");
+        when(mockResultSet.getDouble("knjiga.cenaZaNepovracaj")).thenReturn(1000.0);
 
         List<ApstraktniDomenskiObjekat> rezultat = stavka.vratiListu(mockResultSet);
 
         assertNotNull(rezultat);
-        assertEquals(2, rezultat.size());
-        
-        StavkaZapisaOIznajmljivanju s1 = (StavkaZapisaOIznajmljivanju) rezultat.get(0);
-        assertEquals(5, s1.getZapis());
-        assertEquals(1, s1.getRb());
-        assertEquals(1, s1.getKolicina());
-        assertEquals(200.0, s1.getIznos());
-        assertEquals(true, s1.isVracenoNaVreme());
-        assertNotNull(s1.getKnjiga());
-        assertEquals(30, s1.getKnjiga().getIdKnjiga());
-        assertEquals("Koreni", s1.getKnjiga().getNaslov());
-        
-        StavkaZapisaOIznajmljivanju s2 = (StavkaZapisaOIznajmljivanju) rezultat.get(1);
-        assertEquals(5, s2.getZapis());
-        assertEquals(2, s2.getRb());
-        assertEquals(2, s2.getKolicina());
-        assertEquals(450.0, s2.getIznos());
-        assertEquals(false, s2.isVracenoNaVreme());
-        assertNotNull(s2.getKnjiga());
-        assertEquals(40, s2.getKnjiga().getIdKnjiga());
-        assertEquals("Na Drini cuprija", s2.getKnjiga().getNaslov());
+        assertEquals(1, rezultat.size());
+        StavkaZapisaOIznajmljivanju mapirana = (StavkaZapisaOIznajmljivanju) rezultat.get(0);
+        assertEquals(100, mapirana.getZapis());
+        assertEquals(1, mapirana.getRb());
+        assertEquals(50, mapirana.getKnjiga().getIdKnjiga());
+        assertEquals("Na Drini cuprija", mapirana.getKnjiga().getNaslov());
     }
 }

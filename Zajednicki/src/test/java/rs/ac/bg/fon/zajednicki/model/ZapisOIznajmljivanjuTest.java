@@ -20,181 +20,187 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class ZapisOIznajmljivanjuTest {
 
-    private ZapisOIznajmljivanju zapis;
-    private Bibliotekar bibliotekar;
-    private Citalac citalac;
-    private Mesto mesto;
+    private ZapisOIznajmljivanju z;
+    private Bibliotekar b;
+    private Citalac c;
     private List<StavkaZapisaOIznajmljivanju> stavke;
-    private Date fiksniDatum;
+    private Date datum;
 
     @Mock
     private ResultSet mockResultSet;
 
     @BeforeEach
     void setUp() {
-        fiksniDatum = new Date();
+        datum = new Date();
+        b = new Bibliotekar(1, "Damjan", "Djuric", "064123456", "damjan", "sifra123");
         
-        mesto = new Mesto(11000, "Beograd");
-        citalac = new Citalac("Laza", "Lazarevic", "064555666", mesto);
-        citalac.setIdCitalac(12);
-
-        bibliotekar = new Bibliotekar();
-        bibliotekar.setIdBibliotekar(2);
-        bibliotekar.setIme("Jovan");
-        bibliotekar.setPrezime("Jovanovic");
+        c = new Citalac();
+        c.setIdCitalac(10);
         
         stavke = new ArrayList<>();
-        
-        zapis = new ZapisOIznajmljivanju(fiksniDatum, 1200.0, bibliotekar, citalac, stavke);
-        zapis.setIdZapis(5);
+        StavkaZapisaOIznajmljivanju s1 = new StavkaZapisaOIznajmljivanju();
+        s1.setRb(1);
+
+        Knjiga k = new Knjiga();
+        s1.setKnjiga(k);
+        stavke.add(s1);
+
+        z = new ZapisOIznajmljivanju(datum, 500.0, b, c, stavke);
+        z.setIdZapis(100);
     }
 
     @AfterEach
     void tearDown() {
-        zapis = null;
-        bibliotekar = null;
-        citalac = null;
-        mesto = null;
+        z = null;
+        b = null;
+        c = null;
         stavke = null;
     }
 
     @Test
     void testSetIdZapis() {
-        zapis.setIdZapis(10);
-        assertEquals(10, zapis.getIdZapis());
+        z.setIdZapis(200);
+        assertEquals(200, z.getIdZapis());
     }
 
     @Test
-    void testSetDatumIznajmljivanja() {
-        Date noviDatum = new Date(fiksniDatum.getTime() + 200000);
-        zapis.setDatumIznajmljivanja(noviDatum);
-        assertEquals(noviDatum, zapis.getDatumIznajmljivanja());
+    void testSetDatumIznajmljivanjaUspesno() {
+        Date noviDatum = new Date();
+        z.setDatumIznajmljivanja(noviDatum);
+        assertEquals(noviDatum, z.getDatumIznajmljivanja());
     }
 
     @Test
-    void testSetUkupanIznos() {
-        zapis.setUkupanIznos(2500.0);
-        assertEquals(2500.0, zapis.getUkupanIznos());
+    void testSetDatumIznajmljivanjaNull() {
+        assertThrows(IllegalArgumentException.class, () -> z.setDatumIznajmljivanja(null));
     }
 
     @Test
-    void testSetBibliotekar() {
-        Bibliotekar noviB = new Bibliotekar();
-        noviB.setIdBibliotekar(9);
-        zapis.setBibliotekar(noviB);
-        assertEquals(noviB, zapis.getBibliotekar());
+    void testSetUkupanIznosUspesno() {
+        z.setUkupanIznos(1500.50);
+        assertEquals(1500.50, z.getUkupanIznos());
     }
 
     @Test
-    void testSetCitalac() {
+    void testSetUkupanIznosNegativan() {
+        assertThrows(IllegalArgumentException.class, () -> z.setUkupanIznos(-50));
+    }
+
+    @Test
+    void testSetBibliotekarUspesno() {
+        Bibliotekar noviB = new Bibliotekar(2, "Milica", "Zaric", "065123456", "milica", "sifra123");
+        z.setBibliotekar(noviB);
+        assertEquals(noviB, z.getBibliotekar());
+    }
+
+    @Test
+    void testSetBibliotekarNull() {
+        assertThrows(IllegalArgumentException.class, () -> z.setBibliotekar(null));
+    }
+
+    @Test
+    void testSetCitalacUspesno() {
         Citalac noviC = new Citalac();
-        noviC.setIdCitalac(88);
-        zapis.setCitalac(noviC);
-        assertEquals(noviC, zapis.getCitalac());
+        noviC.setIdCitalac(20);
+        z.setCitalac(noviC);
+        assertEquals(noviC, z.getCitalac());
     }
 
     @Test
-    void testSetStavke() {
+    void testSetCitalacNull() {
+        assertThrows(IllegalArgumentException.class, () -> z.setCitalac(null));
+    }
+
+    @Test
+    void testSetStavkeUspesno() {
         List<StavkaZapisaOIznajmljivanju> noveStavke = new ArrayList<>();
-        noveStavke.add(new StavkaZapisaOIznajmljivanju());
-        zapis.setStavke(noveStavke);
-        assertEquals(noveStavke, zapis.getStavke());
-        assertEquals(1, zapis.getStavke().size());
+        StavkaZapisaOIznajmljivanju s = new StavkaZapisaOIznajmljivanju();
+        s.setRb(1);
+        noveStavke.add(s);
+        
+        z.setStavke(noveStavke);
+        assertEquals(noveStavke, z.getStavke());
+    }
+
+    @Test
+    void testSetStavkeNull() {
+        assertThrows(IllegalArgumentException.class, () -> z.setStavke(null));
     }
 
     @Test
     void testToString() {
-        String ocekivano = "idZapis=" + zapis.getIdZapis() + 
-                           ", datumIznajmljivanja=" + fiksniDatum + 
-                           ", ukupanIznos=1200.0" + 
-                           ", bibliotekar=" + bibliotekar + 
-                           ", citalac=" + citalac + 
-                           ", stavke=" + stavke + '}';
-        assertEquals(ocekivano, zapis.toString());
+        String ocekivano = "idZapis=100, datumIznajmljivanja=" + datum + ", ukupanIznos=500.0, bibliotekar=" + b + ", citalac=" + c + ", stavke=" + stavke + '}';
+        assertEquals(ocekivano, z.toString());
     }
 
     @Test
     void testVratiNazivTabele() {
-        assertEquals("zapisoiznajmljivanju", zapis.vratiNazivTabele());
+        assertEquals("zapisoiznajmljivanju", z.vratiNazivTabele());
     }
 
     @Test
     void testVratiKoloneZaUbacivanje() {
-        assertEquals("datumIznajmljivanja,ukupanIznos,idCitalac,idBibliotekar", zapis.vratiKoloneZaUbacivanje());
+        assertEquals("datumIznajmljivanja,ukupanIznos,idCitalac,idBibliotekar", z.vratiKoloneZaUbacivanje());
     }
 
     @Test
     void testVratiVrednostiZaUbacivanje() {
-        java.sql.Date sqlDatum = new java.sql.Date(fiksniDatum.getTime());
-        String ocekivano = "('" + sqlDatum + "',1200.0,12,2)";
-        assertEquals(ocekivano, zapis.vratiVrednostiZaUbacivanje());
+        java.sql.Date sqlDatum = new java.sql.Date(datum.getTime());
+        String ocekivano = "('" + sqlDatum + "',500.0,10,1)";
+        assertEquals(ocekivano, z.vratiVrednostiZaUbacivanje());
     }
 
     @Test
     void testVratiPrimarniKljuc() {
-        assertEquals("zapisoiznajmljivanju.idZapis=5", zapis.vratiPrimarniKljuc());
+        assertEquals("zapisoiznajmljivanju.idZapis=100", z.vratiPrimarniKljuc());
     }
 
     @Test
     void testVratiVrednostiZaIzmenu() {
-        java.sql.Date sqlDatum = new java.sql.Date(fiksniDatum.getTime());
-        String ocekivano = "datumIznajmljivanja='" + sqlDatum + "',ukupanIznos=1200.0,idCitalac=12,idBibliotekar=2";
-        assertEquals(ocekivano, zapis.vratiVrednostiZaIzmenu());
+        java.sql.Date sqlDatum = new java.sql.Date(datum.getTime());
+        String ocekivano = "datumIznajmljivanja='" + sqlDatum + "',ukupanIznos=500.0,idCitalac=10,idBibliotekar=1";
+        assertEquals(ocekivano, z.vratiVrednostiZaIzmenu());
     }
 
     @Test
     void testVratiObjekatIzRS() {
-        assertThrows(UnsupportedOperationException.class, () -> {
-            zapis.vratiObjekatIzRS(mockResultSet);
-        });
+        assertThrows(UnsupportedOperationException.class, () -> z.vratiObjekatIzRS(mockResultSet));
     }
 
     @Test
-    void testVratiListuKompleksnoUspesnoMapiranje() throws Exception {
-        java.sql.Date sqlSad = new java.sql.Date(fiksniDatum.getTime());
-
+    void testVratiListuUspesno() throws Exception {
+        java.sql.Date sqlDatum = new java.sql.Date(datum.getTime());
+        
         when(mockResultSet.next()).thenReturn(true, false);
-
-        when(mockResultSet.getInt("zapisoiznajmljivanju.idZapis")).thenReturn(50);
-        when(mockResultSet.getDate("zapisoiznajmljivanju.datumIznajmljivanja")).thenReturn(sqlSad);
-        when(mockResultSet.getDouble("zapisoiznajmljivanju.ukupanIznos")).thenReturn(3000.0);
-
-        when(mockResultSet.getInt("citalac.idCitalac")).thenReturn(15);
-        when(mockResultSet.getString("citalac.ime")).thenReturn("Pera");
+        when(mockResultSet.getInt("zapisoiznajmljivanju.idZapis")).thenReturn(100);
+        when(mockResultSet.getDate("zapisoiznajmljivanju.datumIznajmljivanja")).thenReturn(sqlDatum);
+        when(mockResultSet.getDouble("zapisoiznajmljivanju.ukupanIznos")).thenReturn(500.0);
+        
+        when(mockResultSet.getInt("citalac.idCitalac")).thenReturn(10);
+        when(mockResultSet.getString("citalac.ime")).thenReturn("Petar");
         when(mockResultSet.getString("citalac.prezime")).thenReturn("Peric");
-        when(mockResultSet.getString("citalac.brojTel")).thenReturn("061234");
+        when(mockResultSet.getString("citalac.brojTel")).thenReturn("060111222");
+        
+        when(mockResultSet.getInt("mesto.idMesto")).thenReturn(11000);
+        when(mockResultSet.getString("mesto.naziv")).thenReturn("Beograd");
+        
+        when(mockResultSet.getInt("bibliotekar.idBibliotekar")).thenReturn(1);
+        when(mockResultSet.getString("bibliotekar.ime")).thenReturn("Damjan");
+        when(mockResultSet.getString("bibliotekar.prezime")).thenReturn("Djuric");
+        when(mockResultSet.getString("bibliotekar.brojTel")).thenReturn("064123456");
+        when(mockResultSet.getString("bibliotekar.korisnickoIme")).thenReturn("damjan");
+        when(mockResultSet.getString("bibliotekar.sifra")).thenReturn("sifra123");
 
-        when(mockResultSet.getInt("mesto.idMesto")).thenReturn(21000);
-        when(mockResultSet.getString("mesto.naziv")).thenReturn("Novi Sad");
-
-        when(mockResultSet.getInt("bibliotekar.idBibliotekar")).thenReturn(3);
-        when(mockResultSet.getString("bibliotekar.ime")).thenReturn("Ana");
-        when(mockResultSet.getString("bibliotekar.prezime")).thenReturn("Anic");
-        when(mockResultSet.getString("bibliotekar.brojTel")).thenReturn("062999");
-        when(mockResultSet.getString("bibliotekar.korisnickoIme")).thenReturn("ana123");
-        when(mockResultSet.getString("bibliotekar.sifra")).thenReturn("anaSifra");
-
-        List<ApstraktniDomenskiObjekat> rezultat = zapis.vratiListu(mockResultSet);
+        List<ApstraktniDomenskiObjekat> rezultat = z.vratiListu(mockResultSet);
 
         assertNotNull(rezultat);
         assertEquals(1, rezultat.size());
-
-        ZapisOIznajmljivanju z = (ZapisOIznajmljivanju) rezultat.get(0);
-        assertEquals(50, z.getIdZapis());
-        assertEquals(3000.0, z.getUkupanIznos());
-        
-        assertNotNull(z.getCitalac());
-        assertEquals(15, z.getCitalac().getIdCitalac());
-        assertEquals("Pera", z.getCitalac().getIme());
-        assertEquals(21000, z.getCitalac().getMesto().getIdMesto());
-        assertEquals("Novi Sad", z.getCitalac().getMesto().getNaziv());
-
-        assertNotNull(z.getBibliotekar());
-        assertEquals(3, z.getBibliotekar().getIdBibliotekar());
-        assertEquals("Ana", z.getBibliotekar().getIme());
-        assertEquals("ana123", z.getBibliotekar().getKorisnickoIme());
-
-        assertNotNull(z.getStavke());
-        assertEquals(0, z.getStavke().size());
+        ZapisOIznajmljivanju mapirani = (ZapisOIznajmljivanju) rezultat.get(0);
+        assertEquals(100, mapirani.getIdZapis());
+        assertEquals(500.0, mapirani.getUkupanIznos());
+        assertEquals(10, mapirani.getCitalac().getIdCitalac());
+        assertEquals(1, mapirani.getBibliotekar().getIdBibliotekar());
+        assertNotNull(mapirani.getStavke());
+        assertEquals(0, mapirani.getStavke().size());
     }
 }

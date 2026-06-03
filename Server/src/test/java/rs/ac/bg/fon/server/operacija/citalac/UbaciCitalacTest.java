@@ -40,7 +40,6 @@ class UbaciCitalacTest {
 
     @Test
     void testUbaciCitalacUspesno() throws Exception {
-        // Izvršavanje šablonske metode 'izvrsi'
         operacija.izvrsi(ispravanCitalac);
 
         verify(mockBroker).connect();
@@ -62,34 +61,37 @@ class UbaciCitalacTest {
 
     @Test
     void testUbaciCitalacPraznoImeBacaIzuzetak() throws Exception {
-        ispravanCitalac.setIme("");
+        // Hvata se IllegalArgumentException direktno iz modela pri setovanju
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            ispravanCitalac.setIme("");
+        });
+        assertTrue(ex.getMessage().contains("Ime"));
         
-        Exception ex = assertThrows(Exception.class, () -> operacija.izvrsi(ispravanCitalac));
-        assertEquals("GRESKA IME", ex.getMessage());
-        
-        verify(mockBroker).rollback();
+        verify(mockBroker, never()).rollback();
         verify(mockBroker, never()).connect();
     }
 
     @Test
     void testUbaciCitalacPredugacakTelefonBacaIzuzetak() throws Exception {
-        ispravanCitalac.setBrojTel("064123456789111"); 
+        // Hvata se IllegalArgumentException direktno iz modela pri setovanju
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            ispravanCitalac.setBrojTel("064123456789111"); 
+        });
+        assertTrue(ex.getMessage().contains("cifara"));
         
-        Exception ex = assertThrows(Exception.class, () -> operacija.izvrsi(ispravanCitalac));
-        assertEquals("GRESKA BROJ TELEFONA", ex.getMessage());
-        
-        verify(mockBroker).rollback();
+        verify(mockBroker, never()).rollback();
         verify(mockBroker, never()).connect();
     }
 
     @Test
     void testUbaciCitalacMestoNullBacaIzuzetak() throws Exception {
-        ispravanCitalac.setMesto(null);
+        // Hvata se IllegalArgumentException direktno iz modela pri setovanju
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            ispravanCitalac.setMesto(null);
+        });
+        assertTrue(ex.getMessage().contains("Mesto"));
         
-        Exception ex = assertThrows(Exception.class, () -> operacija.izvrsi(ispravanCitalac));
-        assertEquals("GRESKA MESTO", ex.getMessage());
-        
-        verify(mockBroker).rollback();
+        verify(mockBroker, never()).rollback();
         verify(mockBroker, never()).connect();
     }
 
@@ -100,7 +102,6 @@ class UbaciCitalacTest {
         Exception ex = assertThrows(Exception.class, () -> operacija.izvrsi(ispravanCitalac));
         assertEquals("SQL Error", ex.getMessage());
 
-       
         verify(mockBroker).connect();
         verify(mockBroker).add(ispravanCitalac);
         verify(mockBroker).rollback(); 

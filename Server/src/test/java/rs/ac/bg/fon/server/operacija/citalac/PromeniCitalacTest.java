@@ -56,41 +56,41 @@ class PromeniCitalacTest {
 
     @Test
     void testPromeniCitalacPraznoImeBacaIzuzetak() throws Exception {
-        ispravanCitalac.setIme("");
-        
-        Exception ex = assertThrows(Exception.class, () -> operacija.izvrsi(ispravanCitalac));
-        assertEquals("GRESKA IME", ex.getMessage());
-        verify(mockBroker).rollback();
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            ispravanCitalac.setIme("");
+        });
+        assertTrue(ex.getMessage().contains("Ime"));
+        verify(mockBroker, never()).rollback();
         verify(mockBroker, never()).connect();
     }
 
     @Test
     void testPromeniCitalacPraznoPrezimeBacaIzuzetak() throws Exception {
-        ispravanCitalac.setPrezime(null);
-        
-        Exception ex = assertThrows(Exception.class, () -> operacija.izvrsi(ispravanCitalac));
-        assertEquals("GRESKA PREZIME", ex.getMessage());
-        verify(mockBroker).rollback();
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            ispravanCitalac.setPrezime(null);
+        });
+        assertTrue(ex.getMessage().contains("Prezime"));
+        verify(mockBroker, never()).rollback();
         verify(mockBroker, never()).connect();
     }
 
     @Test
     void testPromeniCitalacPredugacakTelefonBacaIzuzetak() throws Exception {
-        ispravanCitalac.setBrojTel("06112345678912345"); 
-        
-        Exception ex = assertThrows(Exception.class, () -> operacija.izvrsi(ispravanCitalac));
-        assertEquals("GRESKA BROJ TELEFONA", ex.getMessage());
-        verify(mockBroker).rollback();
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            ispravanCitalac.setBrojTel("06112345678912345"); 
+        });
+        assertTrue(ex.getMessage().contains("cifara"));
+        verify(mockBroker, never()).rollback();
         verify(mockBroker, never()).connect();
     }
 
     @Test
     void testPromeniCitalacMestoNullBacaIzuzetak() throws Exception {
-        ispravanCitalac.setMesto(null);
-        
-        Exception ex = assertThrows(Exception.class, () -> operacija.izvrsi(ispravanCitalac));
-        assertEquals("GRESKA MESTO", ex.getMessage());
-        verify(mockBroker).rollback();
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            ispravanCitalac.setMesto(null);
+        });
+        assertTrue(ex.getMessage().contains("Mesto"));
+        verify(mockBroker, never()).rollback();
         verify(mockBroker, never()).connect();
     }
 

@@ -1,8 +1,11 @@
 package rs.ac.bg.fon.zajednicki.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.sql.ResultSet;
@@ -14,6 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -42,6 +47,17 @@ public class CitalacTest {
         m = null;
     }
 
+    @Test
+    void testPodrazumevaniKonstruktor() {
+        Citalac prazan = new Citalac();
+        assertNotNull(prazan);
+        assertEquals(0, prazan.getIdCitalac());
+        assertNull(prazan.getIme());
+        assertNull(prazan.getPrezime());
+        assertNull(prazan.getBrojTel());
+        assertNull(prazan.getMesto());
+    }
+
     @ParameterizedTest
     @CsvSource({
         "065111222, 065111222, true",  
@@ -54,6 +70,55 @@ public class CitalacTest {
         c2.setBrojTel(brTel2);
 
         assertEquals(jednako, c.equals(c2));
+    }
+
+    @Test
+    void testEqualsIstiObjekat() {
+        assertTrue(c.equals(c));
+    }
+
+    @Test
+    void testEqualsNull() {
+        assertFalse(c.equals(null));
+    }
+
+    @Test
+    void testEqualsRazlicitaKlasa() {
+        assertFalse(c.equals((Object) new String("065111222")));
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {"   ", "A", "Ab", "\n", "\t"})
+    void testSetImeIzuzetak(String neispravnoIme) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            c.setIme(neispravnoIme);
+        });
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {"   ", "B", "Bc", "\n", "\t"})
+    void testSetPrezimeIzuzetak(String neispravnoPrezime) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            c.setPrezime(neispravnoPrezime);
+        });
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {"   ", "123", "065111222334455", "\n", "\t"})
+    void testSetBrojTelIzuzetak(String neispravanBroj) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            c.setBrojTel(neispravanBroj);
+        });
+    }
+
+    @Test
+    void testSetMestoNullIzuzetak() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            c.setMesto(null);
+        });
     }
 
     @Test
@@ -137,7 +202,7 @@ public class CitalacTest {
         when(mockResultSet.getInt("citalac.idCitalac")).thenReturn(100, 200);
         when(mockResultSet.getString("citalac.ime")).thenReturn("Petar", "Milica");
         when(mockResultSet.getString("citalac.prezime")).thenReturn("Petrovic", "Milovanovic");
-        when(mockResultSet.getString("citalac.brojTel")).thenReturn("060111", "060222");
+        when(mockResultSet.getString("citalac.brojTel")).thenReturn("060111111", "060222222");
 
         when(mockResultSet.getInt("mesto.idMesto")).thenReturn(18000, 34000);
         when(mockResultSet.getString("mesto.naziv")).thenReturn("Nis", "Kragujevac");
