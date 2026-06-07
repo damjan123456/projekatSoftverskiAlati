@@ -85,7 +85,6 @@ class KreirajZapisOIznajmljivanjuTest {
     void testKreirajZapisDatumNullBacaIzuzetak() throws Exception {
         inicijalizujOperaciju();
         
-        // Seter sada direktno baca IllegalArgumentException
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
             ispravanZapis.setDatumIznajmljivanja(null);
         });
@@ -98,7 +97,6 @@ class KreirajZapisOIznajmljivanjuTest {
     void testKreirajZapisNegativanIznosBacaIzuzetak() throws Exception {
         inicijalizujOperaciju();
         
-        // Seter sada direktno baca IllegalArgumentException
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
             ispravanZapis.setUkupanIznos(-50.0);
         });
@@ -111,7 +109,6 @@ class KreirajZapisOIznajmljivanjuTest {
     void testKreirajZapisBibliotekarNullBacaIzuzetak() throws Exception {
         inicijalizujOperaciju();
         
-        // Seter sada direktno baca IllegalArgumentException
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
             ispravanZapis.setBibliotekar(null);
         });
@@ -124,7 +121,6 @@ class KreirajZapisOIznajmljivanjuTest {
     void testKreirajZapisCitalacNullBacaIzuzetak() throws Exception {
         inicijalizujOperaciju();
         
-        // Seter sada direktno baca IllegalArgumentException
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
             ispravanZapis.setCitalac(null);
         });

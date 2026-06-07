@@ -61,7 +61,6 @@ class UbaciCitalacTest {
 
     @Test
     void testUbaciCitalacPraznoImeBacaIzuzetak() throws Exception {
-        // Hvata se IllegalArgumentException direktno iz modela pri setovanju
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
             ispravanCitalac.setIme("");
         });
@@ -73,7 +72,6 @@ class UbaciCitalacTest {
 
     @Test
     void testUbaciCitalacPredugacakTelefonBacaIzuzetak() throws Exception {
-        // Hvata se IllegalArgumentException direktno iz modela pri setovanju
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
             ispravanCitalac.setBrojTel("064123456789111"); 
         });
@@ -85,7 +83,6 @@ class UbaciCitalacTest {
 
     @Test
     void testUbaciCitalacMestoNullBacaIzuzetak() throws Exception {
-        // Hvata se IllegalArgumentException direktno iz modela pri setovanju
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
             ispravanCitalac.setMesto(null);
         });

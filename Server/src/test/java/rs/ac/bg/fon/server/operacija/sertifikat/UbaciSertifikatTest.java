@@ -57,7 +57,6 @@ class UbaciSertifikatTest {
 
     @Test
     void testUbaciSertifikatPraznaInstitucijaBacaIzuzetak() throws Exception {
-        // Seter sada direktno baca IllegalArgumentException
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
             ispravanSertifikat.setInstitucija("");
         });
@@ -68,7 +67,6 @@ class UbaciSertifikatTest {
 
     @Test
     void testUbaciSertifikatNazivNullBacaIzuzetak() throws Exception {
-        // Seter sada direktno baca IllegalArgumentException
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
             ispravanSertifikat.setNaziv(null);
         });

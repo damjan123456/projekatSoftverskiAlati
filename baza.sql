@@ -27,7 +27,7 @@ CREATE TABLE `bibliotekar` (
   `sifra` varchar(50) NOT NULL,
   PRIMARY KEY (`idBibliotekar`),
   UNIQUE KEY `brojTel` (`brojTel`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `bibliotekar` */
 
@@ -48,7 +48,7 @@ CREATE TABLE `bibliotekarsertifikat` (
   KEY `idSertifikat` (`idSertifikat`),
   CONSTRAINT `bibliotekarsertifikat_ibfk_1` FOREIGN KEY (`idBibliotekar`) REFERENCES `bibliotekar` (`idBibliotekar`) ON UPDATE RESTRICT,
   CONSTRAINT `bibliotekarsertifikat_ibfk_2` FOREIGN KEY (`idSertifikat`) REFERENCES `sertifikat` (`idSertifikat`) ON UPDATE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `bibliotekarsertifikat` */
 
@@ -71,7 +71,7 @@ CREATE TABLE `citalac` (
   UNIQUE KEY `brojTel` (`brojTel`),
   KEY `citalac_ibfk_1` (`idMesto`),
   CONSTRAINT `citalac_ibfk_1` FOREIGN KEY (`idMesto`) REFERENCES `mesto` (`idMesto`) ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `citalac` */
 
@@ -92,7 +92,7 @@ CREATE TABLE `knjiga` (
   `autor` varchar(50) NOT NULL,
   `cenaZaNepovracaj` double NOT NULL,
   PRIMARY KEY (`idKnjiga`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `knjiga` */
 
@@ -110,7 +110,7 @@ CREATE TABLE `mesto` (
   `idMesto` bigint NOT NULL AUTO_INCREMENT,
   `naziv` varchar(50) NOT NULL,
   PRIMARY KEY (`idMesto`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `mesto` */
 
@@ -132,7 +132,7 @@ CREATE TABLE `sertifikat` (
   `naziv` varchar(50) NOT NULL,
   `institucija` varchar(50) NOT NULL,
   PRIMARY KEY (`idSertifikat`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `sertifikat` */
 
@@ -164,7 +164,7 @@ CREATE TABLE `stavkazapisaoiznajmljivanju` (
   KEY `stavkazapisaoiznajmljivanju_ibfk_2` (`idKnjiga`),
   CONSTRAINT `stavkazapisaoiznajmljivanju_ibfk_1` FOREIGN KEY (`idZapis`) REFERENCES `zapisoiznajmljivanju` (`idZapis`) ON UPDATE RESTRICT,
   CONSTRAINT `stavkazapisaoiznajmljivanju_ibfk_2` FOREIGN KEY (`idKnjiga`) REFERENCES `knjiga` (`idKnjiga`) ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `stavkazapisaoiznajmljivanju` */
 
@@ -196,7 +196,7 @@ CREATE TABLE `zapisoiznajmljivanju` (
   KEY `zapisoiznajmljivanju_ibfk_2` (`idBibliotekar`),
   CONSTRAINT `zapisoiznajmljivanju_ibfk_1` FOREIGN KEY (`idCitalac`) REFERENCES `citalac` (`idCitalac`) ON UPDATE RESTRICT,
   CONSTRAINT `zapisoiznajmljivanju_ibfk_2` FOREIGN KEY (`idBibliotekar`) REFERENCES `bibliotekar` (`idBibliotekar`) ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `zapisoiznajmljivanju` */
 

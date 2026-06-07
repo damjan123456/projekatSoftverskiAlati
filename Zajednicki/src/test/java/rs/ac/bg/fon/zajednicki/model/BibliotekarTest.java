@@ -77,7 +77,6 @@ public class BibliotekarTest {
 
     @Test
     void testSetImePrekratko() {
-        // Validacija baca izuzetak ako je dužina <= 2
         assertThrows(IllegalArgumentException.class, () -> b.setIme("An"));
     }
 
@@ -99,9 +98,6 @@ public class BibliotekarTest {
 
     @Test
     void testSetPrezimePrekratko() {
-        // PAŽNJA: U tvom kodu u setPrezime() greškom proveravaš dužinu atributa 'ime' umesto 'prezime'
-        // (if (ime.trim().length() <= 2)). Test će pasti ako ime ima više od 2 karaktera.
-        // Ovdje testiramo logiku kako je napisana.
         assertThrows(IllegalArgumentException.class, () -> b.setPrezime("jo"));
     }
 

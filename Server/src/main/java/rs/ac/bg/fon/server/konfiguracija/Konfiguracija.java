@@ -34,7 +34,7 @@ public class Konfiguracija {
     private Konfiguracija() {
         try {
             konfiguracija = new Properties();
-            konfiguracija.load(new FileInputStream("D:\\FON\\ProjektovanjeSoftvera\\seminarski\\netbeans\\config\\config.properties"));
+            konfiguracija.load(new FileInputStream("C:\\Users\\Korisnik\\OneDrive\\Desktop\\faks\\config.properties"));
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         } catch (IOException ex) {
@@ -82,7 +82,7 @@ public class Konfiguracija {
      */
     public void izmeni(){
         try {
-            konfiguracija.store(new FileOutputStream("D:\\FON\\ProjektovanjeSoftvera\\seminarski\\netbeans\\config\\config.properties"), null);
+            konfiguracija.store(new FileOutputStream("C:\\Users\\Korisnik\\OneDrive\\Desktop\\faks\\config.properties"), null);
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         } catch (IOException ex) {
